@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="author" content="Samuel Woodman" />
+
+<meta name="date" content="2019-07-23" />
+
+<title>Woodman et al (in review) - Example analysis</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#header {
+text-align: center;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Woodman et al (in review) - Example analysis</h1>
+<h4 class="author">Samuel Woodman</h4>
+<h4 class="date">2019-07-23</h4>
+
+
+
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">library</span>(dplyr)</a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="kw">library</span>(eSDM)</a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="kw">library</span>(lwgeom)</a>
+<a class="sourceLine" id="cb1-4" title="4"><span class="kw">library</span>(maps)</a>
+<a class="sourceLine" id="cb1-5" title="5"><span class="kw">library</span>(maptools)</a>
+<a class="sourceLine" id="cb1-6" title="6"><span class="kw">library</span>(sf)</a>
+<a class="sourceLine" id="cb1-7" title="7"></a>
+<a class="sourceLine" id="cb1-8" title="8"><span class="kw">source</span>(<span class="kw">system.file</span>(<span class="st">&quot;eSDM_vignette_helper.R&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;eSDM&quot;</span>), <span class="dt">local =</span> <span class="ot">TRUE</span>, <span class="dt">echo =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<div id="overview" class="section level2">
+<h2>Overview</h2>
+<p><code>eSDM</code> allows users to create ensembles of predictions from species distribution models (SDMs), either using the <code>eSDM</code> GUI or manually in R using <code>eSDM</code> functions. This vignette demonstrates creating and evaluating ensembles using <code>eSDM</code> functions by manually performing the example analysis from Woodman <em>et al.</em> (in review). The example analysis explores differences between blue whale SDM predictions for the California Current Ecosystem (CCE) from Becker <em>et al.</em> (2016; i.e., Model_B), Hazen <em>et al.</em> (2017; i.e., Model_H), and Redfern <em>et al.</em> (2017; i.e., Model_R). It also creates and evaluates ensembles of the predictions, with associated uncertainty. See Woodman <em>et al.</em> (in review) for additional details, and in particular Table 1 for details about differences between the models.</p>
+<p>In this vignette, the three sets of predictions and the validation data are read from .rds files because the original files were too large to be included in the package. The sections where these data are imported includes the code for reading the data from their original files, although this code has been commented out. The original files can be downloaded through the GUI or from <a href="https://github.com/smwoodman/eSDM-data" class="uri">https://github.com/smwoodman/eSDM-data</a>.</p>
+<p>This document contains code for plotting predictions. However, by default some of the plotting code is not run because it can take several minutes (these code chunks contain the comment “code not run”). If desired, you may run these code chunks manually in R.</p>
+<p>Before using data from this example analysis, please see the README.txt file for proper citation information (located at <code>system.file(&quot;extdata/README.txt&quot;, package = &quot;eSDM&quot;</code>) and contact the author.</p>
+</div>
+<div id="import-sdm-predictions" class="section level2">
+<h2>Import SDM predictions</h2>
+<p>The first step of the example analysis is to import and process the Model_B, Model_H, and Model_R predictions, along with their standard error (SE) values. Use <code>pts2poly_centroids</code> to create <code>sf</code> objects from polygon centroids from .csv files, <code>raster::raster</code> to import raster files, and <code>sf::st_read</code> to import GIS files. The dimensions of the Model_B and Model_H predictions are 0.09 x 0.09 degrees and 0.25 x 0.25 degrees, respectively; the second argument of <code>pts2poly_centroids</code> is half the length of one side of the polygon. GIS files already have a defined geometry that is read by <code>st_read</code>. Before overlaying predictions, you must ensure the following:</p>
+<ul>
+<li>All predictions are <code>sf</code> objects. See below for examples of converting a .csv file of grid centroids or a <code>raster</code> object to an <code>sf</code> object.</li>
+<li>The geometries of the predictions are valid; this can be checked using <code>sf::st_is_valid</code>.</li>
+<li>The geometries of the predictions have a defined coordinate reference system (crs); this can be checked using <code>sf::st_crs</code>.</li>
+<li>The predictions have the same longitudinal range (i.e., either [0, 360] or [-180, 180]); this can be checked using <code>sf::st_bbox</code>. You can use <code>sf::st_wrap_dateline</code> to convert an <code>sf</code> object to the longitudinal range [-180, 180], but note that this will cause plots to span [180, 180].</li>
+</ul>
+<p>We can visualize the SDM predictions after importing and processing them. The plots below make up Fig. 3 in Woodman <em>et al.</em> (in review). This vignette uses the custom <code>plot_sf_3panel</code> function (in ‘vignette_helper.R’ located at <code>system.file(&quot;vignette_helper.R&quot;, package = &quot;eSDM&quot;</code>) for plotting. <code>plot_sf_3panel</code> and <code>tmap_sdm</code> (used later in this vignette) were not included as functions in the <code>eSDM</code> package because they are fairly specific to the example analysis region and SDMs. However, they can provide guidelines and a framework for plotting SDMs using the plotting functionality of the <code>sf</code> and <code>tmap</code> packages, allowing you to adapt these functions to your specific plotting needs.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="co"># Import, process, and plot Model_B predictions</span></a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="co"># model.b &lt;- read.csv(&quot;Predictions_Beckeretal2016.csv&quot;)</span></a>
+<a class="sourceLine" id="cb2-3" title="3">model.b.sf &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="kw">system.file</span>(<span class="st">&quot;extdata/Predictions_Beckeretal2016.rds&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;eSDM&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb2-4" title="4"><span class="st">  </span>eSDM<span class="op">::</span><span class="kw">pts2poly_centroids</span>(<span class="fl">0.09</span> <span class="op">/</span><span class="st"> </span><span class="dv">2</span>, <span class="dt">crs =</span> <span class="dv">4326</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb2-5" title="5"><span class="st">  </span><span class="kw">st_wrap_dateline</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb2-6" title="6"><span class="st">  </span><span class="kw">st_set_agr</span>(<span class="st">&quot;constant&quot;</span>)</a>
+<a class="sourceLine" id="cb2-7" title="7"></a>
+<a class="sourceLine" id="cb2-8" title="8">model.b.sf</a>
+<a class="sourceLine" id="cb2-9" title="9"><span class="co">#&gt; Simple feature collection with 14807 features and 2 fields</span></a>
+<a class="sourceLine" id="cb2-10" title="10"><span class="co">#&gt; Attribute-geometry relationship: 2 constant, 0 aggregate, 0 identity</span></a>
+<a class="sourceLine" id="cb2-11" title="11"><span class="co">#&gt; geometry type:  POLYGON</span></a>
+<a class="sourceLine" id="cb2-12" title="12"><span class="co">#&gt; dimension:      XY</span></a>
+<a class="sourceLine" id="cb2-13" title="13"><span class="co">#&gt; bbox:           xmin: -131.085 ymin: 30.045 xmax: -117.135 ymax: 48.585</span></a>
+<a class="sourceLine" id="cb2-14" title="14"><span class="co">#&gt; epsg (SRID):    4326</span></a>
+<a class="sourceLine" id="cb2-15" title="15"><span class="co">#&gt; proj4string:    +proj=longlat +datum=WGS84 +no_defs</span></a>
+<a class="sourceLine" id="cb2-16" title="16"><span class="co">#&gt; First 10 features:</span></a>
+<a class="sourceLine" id="cb2-17" title="17"><span class="co">#&gt;        pred_bm           se                       geometry</span></a>
+<a class="sourceLine" id="cb2-18" title="18"><span class="co">#&gt; 1  5.45105e-05 5.097233e-05 POLYGON ((-123.525 30.135, ...</span></a>
+<a class="sourceLine" id="cb2-19" title="19"><span class="co">#&gt; 2  5.24382e-05 5.361254e-05 POLYGON ((-123.435 30.135, ...</span></a>
+<a class="sourceLine" id="cb2-20" title="20"><span class="co">#&gt; 3  4.69742e-05 5.109131e-05 POLYGON ((-123.345 30.135, ...</span></a>
+<a class="sourceLine" id="cb2-21" title="21"><span class="co">#&gt; 4  4.23983e-05 4.816211e-05 POLYGON ((-123.255 30.135, ...</span></a>
+<a class="sourceLine" id="cb2-22" title="22"><span class="co">#&gt; 5  4.36095e-05 5.090475e-05 POLYGON ((-123.165 30.135, ...</span></a>
+<a class="sourceLine" id="cb2-23" title="23"><span class="co">#&gt; 6  1.07515e-04 8.646826e-05 POLYGON ((-123.705 30.225, ...</span></a>
+<a class="sourceLine" id="cb2-24" title="24"><span class="co">#&gt; 7  1.28310e-04 1.032217e-04 POLYGON ((-123.615 30.225, ...</span></a>
+<a class="sourceLine" id="cb2-25" title="25"><span class="co">#&gt; 8  1.18435e-04 1.022898e-04 POLYGON ((-123.525 30.225, ...</span></a>
+<a class="sourceLine" id="cb2-26" title="26"><span class="co">#&gt; 9  1.09491e-04 1.067405e-04 POLYGON ((-123.435 30.225, ...</span></a>
+<a class="sourceLine" id="cb2-27" title="27"><span class="co">#&gt; 10 1.07454e-04 1.186867e-04 POLYGON ((-123.345 30.225, ...</span></a>
+<a class="sourceLine" id="cb2-28" title="28"></a>
+<a class="sourceLine" id="cb2-29" title="29"><span class="co"># Make base map</span></a>
+<a class="sourceLine" id="cb2-30" title="30">map.world &lt;-<span class="st"> </span><span class="kw">st_geometry</span>(<span class="kw">st_as_sf</span>(<span class="kw">map</span>(<span class="st">&#39;world&#39;</span>, <span class="dt">plot =</span> <span class="ot">FALSE</span>, <span class="dt">fill =</span> <span class="ot">TRUE</span>)))</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">plot_sf_3panel</span>(model.b.sf, <span class="st">&quot;pred_bm&quot;</span>, <span class="dt">main.txt =</span> <span class="st">&quot;Model_B - &quot;</span>, <span class="dt">map.base =</span> map.world)</a></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="co"># Import, process, and plot Model_H predictions</span></a>
+<a class="sourceLine" id="cb4-2" title="2"><span class="co"># model.h &lt;- read.csv(&quot;Predictions_Hazenetal2017.csv&quot;)</span></a>
+<a class="sourceLine" id="cb4-3" title="3">model.h.sf &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="kw">system.file</span>(<span class="st">&quot;extdata/Predictions_Hazenetal2017.rds&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;eSDM&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-4" title="4"><span class="st">  </span><span class="kw">select</span>(lon, lat, pred_bm, se) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb4-5" title="5"><span class="st">  </span>eSDM<span class="op">::</span><span class="kw">pts2poly_centroids</span>(<span class="fl">0.25</span> <span class="op">/</span><span class="st"> </span><span class="dv">2</span>, <span class="dt">crs =</span> <span class="dv">4326</span>, <span class="dt">agr =</span> <span class="st">&quot;constant&quot;</span>)</a>
+<a class="sourceLine" id="cb4-6" title="6"></a>
+<a class="sourceLine" id="cb4-7" title="7">model.h.sf</a>
+<a class="sourceLine" id="cb4-8" title="8"><span class="co">#&gt; Simple feature collection with 4052 features and 2 fields</span></a>
+<a class="sourceLine" id="cb4-9" title="9"><span class="co">#&gt; Attribute-geometry relationship: 2 constant, 0 aggregate, 0 identity</span></a>
+<a class="sourceLine" id="cb4-10" title="10"><span class="co">#&gt; geometry type:  POLYGON</span></a>
+<a class="sourceLine" id="cb4-11" title="11"><span class="co">#&gt; dimension:      XY</span></a>
+<a class="sourceLine" id="cb4-12" title="12"><span class="co">#&gt; bbox:           xmin: -135.125 ymin: 29.875 xmax: -115.875 ymax: 49.125</span></a>
+<a class="sourceLine" id="cb4-13" title="13"><span class="co">#&gt; epsg (SRID):    4326</span></a>
+<a class="sourceLine" id="cb4-14" title="14"><span class="co">#&gt; proj4string:    +proj=longlat +datum=WGS84 +no_defs</span></a>
+<a class="sourceLine" id="cb4-15" title="15"><span class="co">#&gt; First 10 features:</span></a>
+<a class="sourceLine" id="cb4-16" title="16"><span class="co">#&gt;       pred_bm          se                       geometry</span></a>
+<a class="sourceLine" id="cb4-17" title="17"><span class="co">#&gt; 1  0.04554697 0.053372075 POLYGON ((-134.875 30.125, ...</span></a>
+<a class="sourceLine" id="cb4-18" title="18"><span class="co">#&gt; 2  0.03947545 0.033144082 POLYGON ((-134.625 30.125, ...</span></a>
+<a class="sourceLine" id="cb4-19" title="19"><span class="co">#&gt; 3  0.05845509 0.034460358 POLYGON ((-134.375 30.125, ...</span></a>
+<a class="sourceLine" id="cb4-20" title="20"><span class="co">#&gt; 4  0.05839801 0.036792245 POLYGON ((-134.125 30.125, ...</span></a>
+<a class="sourceLine" id="cb4-21" title="21"><span class="co">#&gt; 5  0.07102714 0.041752473 POLYGON ((-133.875 30.125, ...</span></a>
+<a class="sourceLine" id="cb4-22" title="22"><span class="co">#&gt; 6  0.04468036 0.018479887 POLYGON ((-133.625 30.125, ...</span></a>
+<a class="sourceLine" id="cb4-23" title="23"><span class="co">#&gt; 7  0.05754484 0.009460079 POLYGON ((-133.375 30.125, ...</span></a>
+<a class="sourceLine" id="cb4-24" title="24"><span class="co">#&gt; 8  0.03529852 0.017022402 POLYGON ((-133.125 30.125, ...</span></a>
+<a class="sourceLine" id="cb4-25" title="25"><span class="co">#&gt; 9  0.10666410 0.063944752 POLYGON ((-132.875 30.125, ...</span></a>
+<a class="sourceLine" id="cb4-26" title="26"><span class="co">#&gt; 10 0.11393473 0.061255526 POLYGON ((-132.625 30.125, ...</span></a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="kw">plot_sf_3panel</span>(model.h.sf, <span class="st">&quot;pred_bm&quot;</span>, <span class="dt">main.txt =</span> <span class="st">&quot;Model_H - &quot;</span>, <span class="dt">map.base =</span> map.world)</a></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1"><span class="co"># Import, process, and plot Model_R predictions</span></a>
+<a class="sourceLine" id="cb6-2" title="2"><span class="co"># model.r &lt;- st_read(&quot;Shapefiles/Predictions_Redfernetal2017.shp&quot;)</span></a>
+<a class="sourceLine" id="cb6-3" title="3">model.r.sf &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="kw">system.file</span>(<span class="st">&quot;extdata/Predictions_Redfernetal2017.rds&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;eSDM&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb6-4" title="4"><span class="st">  </span><span class="kw">st_make_valid</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="co">#</span></a>
+<a class="sourceLine" id="cb6-5" title="5"><span class="st">  </span><span class="kw">st_set_agr</span>(<span class="st">&quot;constant&quot;</span>)</a>
+<a class="sourceLine" id="cb6-6" title="6"></a>
+<a class="sourceLine" id="cb6-7" title="7">model.r.sf</a>
+<a class="sourceLine" id="cb6-8" title="8"><span class="co">#&gt; Simple feature collection with 11419 features and 2 fields</span></a>
+<a class="sourceLine" id="cb6-9" title="9"><span class="co">#&gt; Attribute-geometry relationship: 2 constant, 0 aggregate, 0 identity</span></a>
+<a class="sourceLine" id="cb6-10" title="10"><span class="co">#&gt; geometry type:  MULTIPOLYGON</span></a>
+<a class="sourceLine" id="cb6-11" title="11"><span class="co">#&gt; dimension:      XY</span></a>
+<a class="sourceLine" id="cb6-12" title="12"><span class="co">#&gt; bbox:           xmin: -14587510 ymin: 3176115 xmax: -13037510 ymax: 4766115</span></a>
+<a class="sourceLine" id="cb6-13" title="13"><span class="co">#&gt; epsg (SRID):    NA</span></a>
+<a class="sourceLine" id="cb6-14" title="14"><span class="co">#&gt; proj4string:    +proj=cea +lon_0=0 +lat_ts=0 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs</span></a>
+<a class="sourceLine" id="cb6-15" title="15"><span class="co">#&gt; First 10 features:</span></a>
+<a class="sourceLine" id="cb6-16" title="16"><span class="co">#&gt;        pred_bm           se                       geometry</span></a>
+<a class="sourceLine" id="cb6-17" title="17"><span class="co">#&gt; 1  0.008025090 0.0064684470 MULTIPOLYGON (((-13037935 3...</span></a>
+<a class="sourceLine" id="cb6-18" title="18"><span class="co">#&gt; 2  0.009190831 0.0074858911 MULTIPOLYGON (((-13047508 3...</span></a>
+<a class="sourceLine" id="cb6-19" title="19"><span class="co">#&gt; 3  0.007789538 0.0063127310 MULTIPOLYGON (((-13046258 3...</span></a>
+<a class="sourceLine" id="cb6-20" title="20"><span class="co">#&gt; 4  0.004794084 0.0007867314 MULTIPOLYGON (((-13197508 3...</span></a>
+<a class="sourceLine" id="cb6-21" title="21"><span class="co">#&gt; 5  0.004978912 0.0015665607 MULTIPOLYGON (((-13177508 3...</span></a>
+<a class="sourceLine" id="cb6-22" title="22"><span class="co">#&gt; 6  0.004869921 0.0008426572 MULTIPOLYGON (((-13197508 3...</span></a>
+<a class="sourceLine" id="cb6-23" title="23"><span class="co">#&gt; 7  0.004953553 0.0012025559 MULTIPOLYGON (((-13196624 3...</span></a>
+<a class="sourceLine" id="cb6-24" title="24"><span class="co">#&gt; 8  0.004699313 0.0014451453 MULTIPOLYGON (((-13177508 3...</span></a>
+<a class="sourceLine" id="cb6-25" title="25"><span class="co">#&gt; 9  0.004930461 0.0011039563 MULTIPOLYGON (((-13197508 3...</span></a>
+<a class="sourceLine" id="cb6-26" title="26"><span class="co">#&gt; 10          NA           NA MULTIPOLYGON (((-13067508 3...</span></a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1"><span class="kw">plot_sf_3panel</span>(model.r.sf, <span class="st">&quot;pred_bm&quot;</span>, <span class="dt">main.txt =</span> <span class="st">&quot;Model_R - &quot;</span>, <span class="dt">map.base =</span> map.world)</a></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1"><span class="co"># Example code for converting raster to sf object; code not run</span></a>
+<a class="sourceLine" id="cb8-2" title="2">logo &lt;-<span class="st"> </span>raster<span class="op">::</span><span class="kw">raster</span>(<span class="kw">system.file</span>(<span class="st">&quot;external/rlogo.grd&quot;</span>, <span class="dt">package=</span><span class="st">&quot;raster&quot;</span>))</a>
+<a class="sourceLine" id="cb8-3" title="3">logo.sf &lt;-<span class="st"> </span><span class="kw">as</span>(logo, <span class="st">&quot;SpatialPolygonsDataFrame&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb8-4" title="4"><span class="st">  </span>sf<span class="op">::</span><span class="kw">st_as_sf</span>()</a></code></pre></div>
+</div>
+<div id="overlay-predictions" class="section level2">
+<h2>Overlay predictions</h2>
+<p>Because the original predictions have both different spatial resolutions and coordinate systems, we must overlay them onto the same base geometry. See Woodman <em>et al.</em> (in review), the <code>eSDM</code> GUI manual, or the <code>overlay_sdm</code> documentation for details about the overlay process. For the example analysis, we use the geometry of Model_R as the base geometry. However, first we must import and process the study area and erasing polygons, with which we clip and erase land from the base geometry, respectively. We also visualize the base geometry.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="co"># Study area polygon</span></a>
+<a class="sourceLine" id="cb9-2" title="2">poly.study &lt;-<span class="st"> </span><span class="kw">st_read</span>(<span class="kw">system.file</span>(<span class="st">&quot;extdata/Shapefiles/Study_Area_CCE.shp&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;eSDM&quot;</span>)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb9-3" title="3"><span class="st">  </span><span class="kw">st_geometry</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb9-4" title="4"><span class="st">  </span><span class="kw">st_transform</span>(<span class="kw">st_crs</span>(model.r.sf))</a>
+<a class="sourceLine" id="cb9-5" title="5"><span class="co">#&gt; Reading layer `Study_Area_CCE&#39; from data source `C:\Users\sam.woodman\AppData\Local\Temp\RtmpmqY1JV\Rinst1e5c1b7f744f\eSDM\extdata\Shapefiles\Study_Area_CCE.shp&#39; using driver `ESRI Shapefile&#39;</span></a>
+<a class="sourceLine" id="cb9-6" title="6"><span class="co">#&gt; Simple feature collection with 1 feature and 6 fields</span></a>
+<a class="sourceLine" id="cb9-7" title="7"><span class="co">#&gt; geometry type:  POLYGON</span></a>
+<a class="sourceLine" id="cb9-8" title="8"><span class="co">#&gt; dimension:      XY</span></a>
+<a class="sourceLine" id="cb9-9" title="9"><span class="co">#&gt; bbox:           xmin: -131 ymin: 30.05 xmax: -117.013 ymax: 48.6</span></a>
+<a class="sourceLine" id="cb9-10" title="10"><span class="co">#&gt; epsg (SRID):    4326</span></a>
+<a class="sourceLine" id="cb9-11" title="11"><span class="co">#&gt; proj4string:    +proj=longlat +datum=WGS84 +no_defs</span></a>
+<a class="sourceLine" id="cb9-12" title="12"></a>
+<a class="sourceLine" id="cb9-13" title="13"><span class="co"># Erasing polygon; clip to the buffered study area polygon reduces future computation time</span></a>
+<a class="sourceLine" id="cb9-14" title="14">poly.erase &lt;-<span class="st"> </span>eSDM<span class="op">::</span>gshhg.l.L16 <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb9-15" title="15"><span class="st">  </span><span class="kw">st_transform</span>(<span class="kw">st_crs</span>(model.r.sf)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb9-16" title="16"><span class="st">  </span>lwgeom<span class="op">::</span><span class="kw">st_make_valid</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb9-17" title="17"><span class="st">  </span><span class="kw">st_crop</span>(<span class="kw">st_buffer</span>(poly.study, <span class="dv">100000</span>))</a>
+<a class="sourceLine" id="cb9-18" title="18"></a>
+<a class="sourceLine" id="cb9-19" title="19"><span class="co"># Create the base geometry; st_erase() function defined in eSDM_vignette_helper.R</span></a>
+<a class="sourceLine" id="cb9-20" title="20">base.geom &lt;-<span class="st"> </span>model.r.sf <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb9-21" title="21"><span class="st">  </span><span class="kw">st_geometry</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb9-22" title="22"><span class="st">  </span><span class="kw">st_erase</span>(poly.erase) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb9-23" title="23"><span class="st">  </span><span class="kw">st_intersection</span>(poly.study) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb9-24" title="24"><span class="st">  </span><span class="kw">st_cast</span>(<span class="st">&quot;MULTIPOLYGON&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1"><span class="co"># Visualize the base geometry</span></a>
+<a class="sourceLine" id="cb10-2" title="2"><span class="kw">plot</span>(<span class="kw">st_transform</span>(base.geom, <span class="dv">4326</span>), <span class="dt">col =</span> <span class="ot">NA</span>, <span class="dt">border =</span> <span class="st">&quot;black&quot;</span>, <span class="dt">axes =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb10-3" title="3"><span class="kw">plot</span>(map.world, <span class="dt">add =</span> <span class="ot">TRUE</span>, <span class="dt">col =</span> <span class="st">&quot;tan&quot;</span>, <span class="dt">border =</span> <span class="ot">NA</span>)</a>
+<a class="sourceLine" id="cb10-4" title="4">graphics<span class="op">::</span><span class="kw">box</span>()</a></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<p>Next, we convert any associated uncertainty values to variance. Uncertainty values must be overlaid as variance values to remain statistically valid.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1"><span class="co"># Convert SE values to variance</span></a>
+<a class="sourceLine" id="cb11-2" title="2">model.b.sf &lt;-<span class="st"> </span>model.b.sf <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb11-3" title="3"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">variance =</span> se<span class="op">^</span><span class="dv">2</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb11-4" title="4"><span class="st">  </span><span class="kw">select</span>(pred_bm, se, variance)</a>
+<a class="sourceLine" id="cb11-5" title="5">model.h.sf &lt;-<span class="st"> </span>model.h.sf <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb11-6" title="6"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">variance =</span> se<span class="op">^</span><span class="dv">2</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb11-7" title="7"><span class="st">  </span><span class="kw">select</span>(pred_bm, se, variance)</a>
+<a class="sourceLine" id="cb11-8" title="8">model.r.sf &lt;-<span class="st"> </span>model.r.sf <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb11-9" title="9"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">variance =</span> se<span class="op">^</span><span class="dv">2</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb11-10" title="10"><span class="st">  </span><span class="kw">select</span>(pred_bm, se, variance)</a></code></pre></div>
+<p>Now we can overlay the original predictions onto the base geometry. Note that because we clipped and erased land from the base geometry, we cannot simply use the original Model_R predictions and geometry. However, we can ‘overlay’ the Model_R predictions by matching indices of base geometry polygons and Model_R prediction values (<code>over3.sfb</code> in the code below).</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1"><span class="co"># Perform overlay, and convert overlaid uncertainty values to SEs</span></a>
+<a class="sourceLine" id="cb12-2" title="2">over1.sf &lt;-<span class="st"> </span>eSDM<span class="op">::</span><span class="kw">overlay_sdm</span>(base.geom, <span class="kw">st_transform</span>(model.b.sf, <span class="kw">st_crs</span>(base.geom)), <span class="kw">c</span>(<span class="st">&quot;pred_bm&quot;</span>, <span class="st">&quot;variance&quot;</span>), <span class="dv">50</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb12-3" title="3"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">se =</span> <span class="kw">sqrt</span>(variance))</a>
+<a class="sourceLine" id="cb12-4" title="4">over2.sf &lt;-<span class="st"> </span>eSDM<span class="op">::</span><span class="kw">overlay_sdm</span>(base.geom, <span class="kw">st_transform</span>(model.h.sf, <span class="kw">st_crs</span>(base.geom)), <span class="kw">c</span>(<span class="st">&quot;pred_bm&quot;</span>, <span class="st">&quot;variance&quot;</span>), <span class="dv">50</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb12-5" title="5"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">se =</span> <span class="kw">sqrt</span>(variance))</a>
+<a class="sourceLine" id="cb12-6" title="6">over3.sf &lt;-<span class="st"> </span>eSDM<span class="op">::</span><span class="kw">overlay_sdm</span>(base.geom, model.r.sf, <span class="kw">c</span>(<span class="st">&quot;pred_bm&quot;</span>, <span class="st">&quot;variance&quot;</span>), <span class="dv">50</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb12-7" title="7"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">se =</span> <span class="kw">sqrt</span>(variance))</a>
+<a class="sourceLine" id="cb12-8" title="8"></a>
+<a class="sourceLine" id="cb12-9" title="9">over3.sfb &lt;-<span class="st"> </span>model.r.sf <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb12-10" title="10"><span class="st">  </span><span class="kw">st_set_geometry</span>(<span class="ot">NULL</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb12-11" title="11"><span class="st">  </span><span class="kw">select</span>(pred_bm, variance) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb12-12" title="12"><span class="st">  </span><span class="kw">st_sf</span>(<span class="dt">geometry =</span> base.geom, <span class="dt">agr =</span> <span class="st">&quot;constant&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb12-13" title="13"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">mutate</span>(<span class="dt">se =</span> <span class="kw">sqrt</span>(variance))</a>
+<a class="sourceLine" id="cb12-14" title="14"><span class="kw">all.equal</span>(over3.sf, over3.sfb)</a>
+<a class="sourceLine" id="cb12-15" title="15"><span class="co">#&gt; [1] TRUE</span></a>
+<a class="sourceLine" id="cb12-16" title="16"><span class="kw">rm</span>(over3.sfb)</a></code></pre></div>
+<p>We also could plot the overlaid predictions to show that the overlaid distribution patterns are very similar to those of the original predictions.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1"><span class="co"># Plot overlaid predictions; code not run</span></a>
+<a class="sourceLine" id="cb13-2" title="2"><span class="kw">plot_sf_3panel</span>(over1.sf, <span class="st">&quot;pred_bm&quot;</span>, <span class="dt">main.txt =</span> <span class="st">&quot;Overlaid Model_B - &quot;</span>, <span class="dt">map.base =</span> map.world)</a>
+<a class="sourceLine" id="cb13-3" title="3"><span class="kw">plot_sf_3panel</span>(over2.sf, <span class="st">&quot;pred_bm&quot;</span>, <span class="dt">main.txt =</span> <span class="st">&quot;Overlaid Model_H - &quot;</span>, <span class="dt">map.base =</span> map.world)</a>
+<a class="sourceLine" id="cb13-4" title="4"><span class="kw">plot_sf_3panel</span>(over3.sf, <span class="st">&quot;pred_bm&quot;</span>, <span class="dt">main.txt =</span> <span class="st">&quot;Overlaid Model_R - &quot;</span>, <span class="dt">map.base =</span> map.world)</a></code></pre></div>
+</div>
+<div id="calculate-evaluation-metrics" class="section level2">
+<h2>Calculate evaluation metrics</h2>
+<p>To evaluate predictions and create ensembles with weights based on evaluation metrics, we must load and process the validation data sets for use with <code>evaluation metrics</code>. The validation data must be points of class <code>sf</code> with a column with either binary presence/absence or count data. For the example analysis, we use three validation sets in the example analysis, line transect data (Becker <em>et al.</em> 2016), home range data (Irvine <em>et al.</em> 2014), and these two data sets combined. Because our validation data are binary (i.e., presence/absence), there is a column indicating whether each value is a presence point (1) or absence point (0).</p>
+<p>Note that in this vignette, the validation data are read from .rda files because the original file was too big to be included in the package. However, the original file can be downloaded through the GUI or from <a href="https://github.com/smwoodman/eSDM-data" class="uri">https://github.com/smwoodman/eSDM-data</a></p>
+<p>Use the function <code>sf::st_as_sf</code> to convert a data frame with lon/lat coordinates to an <code>sf</code> object.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1"><span class="co"># Import and process validation data</span></a>
+<a class="sourceLine" id="cb14-2" title="2"><span class="co"># valid.data &lt;- read.csv(&quot;eSDM_Validation_data_all.csv&quot;, stringsAsFactors = FALSE)</span></a>
+<a class="sourceLine" id="cb14-3" title="3">valid.data &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="kw">system.file</span>(<span class="st">&quot;extdata/eSDM_Validation_data_all.rds&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;eSDM&quot;</span>))<span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb14-4" title="4"><span class="st">  </span><span class="kw">arrange</span>(source, lat, lon) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb14-5" title="5"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">pres_abs =</span> <span class="kw">ifelse</span>(pres_abs <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>)) <span class="op">%&gt;%</span><span class="st"> </span><span class="co">#For demonstration purposes; pres_abs column is already binary</span></a>
+<a class="sourceLine" id="cb14-6" title="6"><span class="st">  </span><span class="kw">st_as_sf</span>(<span class="dt">coords =</span> <span class="kw">c</span>(<span class="st">&quot;lon&quot;</span>, <span class="st">&quot;lat&quot;</span>), <span class="dt">crs =</span> <span class="dv">4326</span>, <span class="dt">agr =</span> <span class="st">&quot;constant&quot;</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb14-7" title="7"><span class="st">  </span><span class="kw">st_transform</span>(<span class="kw">st_crs</span>(base.geom))</a>
+<a class="sourceLine" id="cb14-8" title="8"></a>
+<a class="sourceLine" id="cb14-9" title="9"><span class="co"># Extract the line transect and home range validation data</span></a>
+<a class="sourceLine" id="cb14-10" title="10">valid.data.lt &lt;-<span class="st"> </span>valid.data <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(source <span class="op">==</span><span class="st"> &quot;Becker_et_al_2016&quot;</span>)</a>
+<a class="sourceLine" id="cb14-11" title="11">valid.data.hr &lt;-<span class="st"> </span>valid.data <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(source <span class="op">==</span><span class="st"> &quot;Irvine_et_al_2014&quot;</span>)</a>
+<a class="sourceLine" id="cb14-12" title="12"></a>
+<a class="sourceLine" id="cb14-13" title="13"><span class="co"># Summarize the number of presence and absence points</span></a>
+<a class="sourceLine" id="cb14-14" title="14">valid.data <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb14-15" title="15"><span class="st">  </span><span class="kw">st_set_geometry</span>(<span class="ot">NULL</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb14-16" title="16"><span class="st">  </span><span class="kw">group_by</span>(source) <span class="op">%&gt;%</span><span class="st">  </span></a>
+<a class="sourceLine" id="cb14-17" title="17"><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">pres =</span> <span class="kw">sum</span>(pres_abs <span class="op">==</span><span class="st"> </span><span class="dv">1</span>), </a>
+<a class="sourceLine" id="cb14-18" title="18">            <span class="dt">abs =</span> <span class="kw">sum</span>(pres_abs <span class="op">==</span><span class="st"> </span><span class="dv">0</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb14-19" title="19"><span class="st">  </span>knitr<span class="op">::</span><span class="kw">kable</span>(<span class="dt">caption =</span> <span class="st">&quot;Validation data summary&quot;</span>)</a></code></pre></div>
+<table>
+<caption>Validation data summary</caption>
+<thead>
+<tr class="header">
+<th align="left">source</th>
+<th align="right">pres</th>
+<th align="right">abs</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Becker_et_al_2016</td>
+<td align="right">71</td>
+<td align="right">7368</td>
+</tr>
+<tr class="even">
+<td align="left">Irvine_et_al_2014</td>
+<td align="right">328</td>
+<td align="right">10386</td>
+</tr>
+</tbody>
+</table>
+<p>Now we can calculate the AUC and TSS metrics for the original and overlaid predictions. The displayed table is from Table 3 of Woodman <em>et al.</em> (in review). Note that <code>evaluation_metrics</code> requires that validation data have the same coordinate reference system as the predictions being evaluated.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" title="1"><span class="co"># Calculate evaluation metrics with different validation data sets; code not run</span></a>
+<a class="sourceLine" id="cb15-2" title="2">names<span class="fl">.1</span> &lt;-<span class="st"> </span><span class="kw">c</span>(</a>
+<a class="sourceLine" id="cb15-3" title="3">  <span class="st">&quot;Model_B_orig&quot;</span>, <span class="st">&quot;Model_H_orig&quot;</span>, <span class="st">&quot;Model_R_orig&quot;</span>, </a>
+<a class="sourceLine" id="cb15-4" title="4">  <span class="st">&quot;Model_B_overlaid&quot;</span>, <span class="st">&quot;Model_H_overlaid&quot;</span>, <span class="st">&quot;Model_R_overlaid&quot;</span></a>
+<a class="sourceLine" id="cb15-5" title="5">)</a>
+<a class="sourceLine" id="cb15-6" title="6"></a>
+<a class="sourceLine" id="cb15-7" title="7">eval.lt &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="kw">do.call</span>(rbind, <span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb15-8" title="8">  eSDM<span class="op">::</span><span class="kw">evaluation_metrics</span>(model.b.sf, <span class="dv">1</span>, <span class="kw">st_transform</span>(valid.data.lt, <span class="dv">4326</span>), <span class="st">&quot;pres_abs&quot;</span>), </a>
+<a class="sourceLine" id="cb15-9" title="9">  eSDM<span class="op">::</span><span class="kw">evaluation_metrics</span>(model.h.sf, <span class="dv">1</span>, <span class="kw">st_transform</span>(valid.data.lt, <span class="dv">4326</span>), <span class="st">&quot;pres_abs&quot;</span>), </a>
+<a class="sourceLine" id="cb15-10" title="10">  eSDM<span class="op">::</span><span class="kw">evaluation_metrics</span>(model.r.sf, <span class="dv">1</span>, valid.data.lt, <span class="st">&quot;pres_abs&quot;</span>), </a>
+<a class="sourceLine" id="cb15-11" title="11">  eSDM<span class="op">::</span><span class="kw">evaluation_metrics</span>(over1.sf, <span class="dv">1</span>, valid.data.lt, <span class="st">&quot;pres_abs&quot;</span>), </a>
+<a class="sourceLine" id="cb15-12" title="12">  eSDM<span class="op">::</span><span class="kw">evaluation_metrics</span>(over2.sf, <span class="dv">1</span>, valid.data.lt, <span class="st">&quot;pres_abs&quot;</span>), </a>
+<a class="sourceLine" id="cb15-13" title="13">  eSDM<span class="op">::</span><span class="kw">evaluation_metrics</span>(over3.sf, <span class="dv">1</span>, valid.data.lt, <span class="st">&quot;pres_abs&quot;</span>)</a>
+<a class="sourceLine" id="cb15-14" title="14">))) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb15-15" title="15"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">Preds =</span> names<span class="fl">.1</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb15-16" title="16"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(Preds, <span class="dt">AUC_LT =</span> X1, <span class="dt">TSS_LT =</span> X2)</a>
+<a class="sourceLine" id="cb15-17" title="17"></a>
+<a class="sourceLine" id="cb15-18" title="18">eval.hr &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="kw">do.call</span>(rbind, <span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb15-19" title="19">  eSDM<span class="op">::</span><span class="kw">evaluation_metrics</span>(model.b.sf, <span class="dv">1</span>, <span class="kw">st_transform</span>(valid.data.hr, <span class="dv">4326</span>), <span class="st">&quot;pres_abs&quot;</span>), </a>
+<a class="sourceLine" id="cb15-20" title="20">  eSDM<span class="op">::</span><span class="kw">evaluation_metrics</span>(model.h.sf, <span class="dv">1</span>, <span class="kw">st_transform</span>(valid.data.hr, <span class="dv">4326</span>), <span class="st">&quot;pres_abs&quot;</span>), </a>
+<a class="sourceLine" id="cb15-21" title="21">  eSDM<span class="op">::</span><span class="kw">evaluation_metrics</span>(model.r.sf, <span class="dv">1</span>, valid.data.hr, <span class="st">&quot;pres_abs&quot;</span>), </a>
+<a class="sourceLine" id="cb15-22" title="22">  eSDM<span class="op">::</span><span class="kw">evaluation_metrics</span>(over1.sf, <span class="dv">1</span>, valid.data.hr, <span class="st">&quot;pres_abs&quot;</span>), </a>
+<a class="sourceLine" id="cb15-23" title="23">  eSDM<span class="op">::</span><span class="kw">evaluation_metrics</span>(over2.sf, <span class="dv">1</span>, valid.data.hr, <span class="st">&quot;pres_abs&quot;</span>), </a>
+<a class="sourceLine" id="cb15-24" title="24">  eSDM<span class="op">::</span><span class="kw">evaluation_metrics</span>(over3.sf, <span class="dv">1</span>, valid.data.hr, <span class="st">&quot;pres_abs&quot;</span>)</a>
+<a class="sourceLine" id="cb15-25" title="25">))) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb15-26" title="26"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">Preds =</span> names<span class="fl">.1</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb15-27" title="27"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(Preds, <span class="dt">AUC_HR =</span> X1, <span class="dt">TSS_HR =</span> X2)</a>
+<a class="sourceLine" id="cb15-28" title="28"></a>
+<a class="sourceLine" id="cb15-29" title="29">eval.combo &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="kw">do.call</span>(rbind, <span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb15-30" title="30">  eSDM<span class="op">::</span><span class="kw">evaluation_metrics</span>(model.b.sf, <span class="dv">1</span>, <span class="kw">st_transform</span>(valid.data, <span class="dv">4326</span>), <span class="st">&quot;pres_abs&quot;</span>), </a>
+<a class="sourceLine" id="cb15-31" title="31">  eSDM<span class="op">::</span><span class="kw">evaluation_metrics</span>(model.h.sf, <span class="dv">1</span>, <span class="kw">st_transform</span>(valid.data, <span class="dv">4326</span>), <span class="st">&quot;pres_abs&quot;</span>), </a>
+<a class="sourceLine" id="cb15-32" title="32">  eSDM<span class="op">::</span><span class="kw">evaluation_metrics</span>(model.r.sf, <span class="dv">1</span>, valid.data, <span class="st">&quot;pres_abs&quot;</span>), </a>
+<a class="sourceLine" id="cb15-33" title="33">  eSDM<span class="op">::</span><span class="kw">evaluation_metrics</span>(over1.sf, <span class="dv">1</span>, valid.data, <span class="st">&quot;pres_abs&quot;</span>), </a>
+<a class="sourceLine" id="cb15-34" title="34">  eSDM<span class="op">::</span><span class="kw">evaluation_metrics</span>(over2.sf, <span class="dv">1</span>, valid.data, <span class="st">&quot;pres_abs&quot;</span>), </a>
+<a class="sourceLine" id="cb15-35" title="35">  eSDM<span class="op">::</span><span class="kw">evaluation_metrics</span>(over3.sf, <span class="dv">1</span>, valid.data, <span class="st">&quot;pres_abs&quot;</span>)</a>
+<a class="sourceLine" id="cb15-36" title="36">))) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb15-37" title="37"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">Preds =</span> names<span class="fl">.1</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb15-38" title="38"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(Preds, <span class="dt">AUC =</span> X1, <span class="dt">TSS =</span> X2)</a></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" title="1"><span class="kw">read.csv</span>(<span class="kw">system.file</span>(<span class="st">&quot;extdata/Table3.csv&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;eSDM&quot;</span>)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb16-2" title="2"><span class="st">  </span><span class="kw">filter</span>(<span class="kw">grepl</span>(<span class="st">&quot;Model_&quot;</span>, Predictions)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb16-3" title="3"><span class="st">  </span><span class="kw">select</span>(Predictions, AUC, TSS, <span class="st">`</span><span class="dt">AUC-LT</span><span class="st">`</span> =<span class="st"> </span>AUC.LT, <span class="st">`</span><span class="dt">TSS-LT</span><span class="st">`</span> =<span class="st"> </span>TSS.LT, </a>
+<a class="sourceLine" id="cb16-4" title="4">         <span class="st">`</span><span class="dt">AUC-HR</span><span class="st">`</span> =<span class="st"> </span>AUC.HR, <span class="st">`</span><span class="dt">TSS-HR</span><span class="st">`</span> =<span class="st"> </span>TSS.HR) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb16-5" title="5"><span class="st">  </span>knitr<span class="op">::</span><span class="kw">kable</span>(<span class="dt">caption =</span> <span class="st">&quot;Evaluation metrics&quot;</span>, <span class="dt">digits =</span> <span class="dv">3</span>, <span class="dt">align =</span> <span class="st">&quot;lcccccc&quot;</span>)</a></code></pre></div>
+<table>
+<caption>Evaluation metrics</caption>
+<thead>
+<tr class="header">
+<th align="left">Predictions</th>
+<th align="center">AUC</th>
+<th align="center">TSS</th>
+<th align="center">AUC-LT</th>
+<th align="center">TSS-LT</th>
+<th align="center">AUC-HR</th>
+<th align="center">TSS-HR</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Model_B - original</td>
+<td align="center">0.912</td>
+<td align="center">0.717</td>
+<td align="center">0.732</td>
+<td align="center">0.374</td>
+<td align="center">0.963</td>
+<td align="center">0.824</td>
+</tr>
+<tr class="even">
+<td align="left">Model_H - original</td>
+<td align="center">0.734</td>
+<td align="center">0.414</td>
+<td align="center">0.620</td>
+<td align="center">0.284</td>
+<td align="center">0.772</td>
+<td align="center">0.471</td>
+</tr>
+<tr class="odd">
+<td align="left">Model_R - original</td>
+<td align="center">0.919</td>
+<td align="center">0.756</td>
+<td align="center">0.684</td>
+<td align="center">0.290</td>
+<td align="center">0.980</td>
+<td align="center">0.882</td>
+</tr>
+<tr class="even">
+<td align="left">Model_B - overlaid</td>
+<td align="center">0.916</td>
+<td align="center">0.742</td>
+<td align="center">0.732</td>
+<td align="center">0.380</td>
+<td align="center">0.967</td>
+<td align="center">0.856</td>
+</tr>
+<tr class="odd">
+<td align="left">Model_H - overlaid</td>
+<td align="center">0.735</td>
+<td align="center">0.406</td>
+<td align="center">0.620</td>
+<td align="center">0.286</td>
+<td align="center">0.772</td>
+<td align="center">0.460</td>
+</tr>
+<tr class="even">
+<td align="left">Model_R - overlaid</td>
+<td align="center">0.919</td>
+<td align="center">0.756</td>
+<td align="center">0.684</td>
+<td align="center">0.290</td>
+<td align="center">0.980</td>
+<td align="center">0.882</td>
+</tr>
+</tbody>
+</table>
+<p>We can see that for each set of predictions, the original and overlaid evaluation metrics are quite similar, again showing that the overlay conserved the predicted blue whale distributions.</p>
+</div>
+<div id="create-ensemble-predictions" class="section level2">
+<h2>Create ensemble predictions</h2>
+<p>Before creating the ensembles, we must rescale the overlaid predictions. We rescaled the predictions using the abundance rescaling method and an abundance of 1648 (Becker <em>et al.</em> 2016). Using the sum to 1 rescaling method would result in ensembles with similar distribution patterns, but the actual density values could not be used to provide a meaningful abundance estimate.</p>
+<p><code>ensemble_rescale</code> requires a single <code>sf</code> object that contains all of the data being rescaled. Thus, we extract the prediction and variance values before using the rescaling function.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" title="1"><span class="co"># Rescale predictions</span></a>
+<a class="sourceLine" id="cb17-2" title="2">over.sf &lt;-<span class="st"> </span><span class="kw">bind_cols</span>(</a>
+<a class="sourceLine" id="cb17-3" title="3">  over1.sf <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">st_set_geometry</span>(<span class="ot">NULL</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(<span class="dt">pred_bm1 =</span> pred_bm, <span class="dt">var1 =</span> variance), </a>
+<a class="sourceLine" id="cb17-4" title="4">  over2.sf <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">st_set_geometry</span>(<span class="ot">NULL</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(<span class="dt">pred_bm2 =</span> pred_bm, <span class="dt">var2 =</span> variance), </a>
+<a class="sourceLine" id="cb17-5" title="5">  over3.sf <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">st_set_geometry</span>(<span class="ot">NULL</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(<span class="dt">pred_bm3 =</span> pred_bm, <span class="dt">var3 =</span> variance)</a>
+<a class="sourceLine" id="cb17-6" title="6">) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb17-7" title="7"><span class="st">  </span><span class="kw">st_sf</span>(<span class="dt">geometry =</span> base.geom, <span class="dt">agr =</span> <span class="st">&quot;constant&quot;</span>)</a>
+<a class="sourceLine" id="cb17-8" title="8"></a>
+<a class="sourceLine" id="cb17-9" title="9">over.sf.rescaled &lt;-<span class="st"> </span><span class="kw">ensemble_rescale</span>(</a>
+<a class="sourceLine" id="cb17-10" title="10">  over.sf, <span class="kw">c</span>(<span class="st">&quot;pred_bm1&quot;</span>, <span class="st">&quot;pred_bm2&quot;</span>, <span class="st">&quot;pred_bm3&quot;</span>), <span class="st">&quot;abundance&quot;</span>, <span class="dv">1648</span>, </a>
+<a class="sourceLine" id="cb17-11" title="11">  <span class="dt">x.var.idx =</span> <span class="kw">c</span>(<span class="st">&quot;var1&quot;</span>, <span class="st">&quot;var2&quot;</span>, <span class="st">&quot;var3&quot;</span>)</a>
+<a class="sourceLine" id="cb17-12" title="12">)</a>
+<a class="sourceLine" id="cb17-13" title="13"></a>
+<a class="sourceLine" id="cb17-14" title="14"><span class="co"># Check that overlaid predictions predict expected abundance</span></a>
+<a class="sourceLine" id="cb17-15" title="15">eSDM<span class="op">::</span><span class="kw">model_abundance</span>(over.sf.rescaled, <span class="st">&quot;pred_bm1&quot;</span>)</a>
+<a class="sourceLine" id="cb17-16" title="16"><span class="co">#&gt; pred_bm1 </span></a>
+<a class="sourceLine" id="cb17-17" title="17"><span class="co">#&gt;     1648</span></a>
+<a class="sourceLine" id="cb17-18" title="18">eSDM<span class="op">::</span><span class="kw">model_abundance</span>(over.sf.rescaled, <span class="st">&quot;pred_bm2&quot;</span>)</a>
+<a class="sourceLine" id="cb17-19" title="19"><span class="co">#&gt; pred_bm2 </span></a>
+<a class="sourceLine" id="cb17-20" title="20"><span class="co">#&gt;     1648</span></a>
+<a class="sourceLine" id="cb17-21" title="21">eSDM<span class="op">::</span><span class="kw">model_abundance</span>(over.sf.rescaled, <span class="st">&quot;pred_bm3&quot;</span>)</a>
+<a class="sourceLine" id="cb17-22" title="22"><span class="co">#&gt; pred_bm3 </span></a>
+<a class="sourceLine" id="cb17-23" title="23"><span class="co">#&gt;     1648</span></a>
+<a class="sourceLine" id="cb17-24" title="24"></a>
+<a class="sourceLine" id="cb17-25" title="25"><span class="kw">summary</span>(over.sf.rescaled)</a>
+<a class="sourceLine" id="cb17-26" title="26"><span class="co">#&gt;     pred_bm1            var1          pred_bm2            var2   </span></a>
+<a class="sourceLine" id="cb17-27" title="27"><span class="co">#&gt;  Min.   :0.00001   Min.   :0e+00   Min.   :0.00003   Min.   :0   </span></a>
+<a class="sourceLine" id="cb17-28" title="28"><span class="co">#&gt;  1st Qu.:0.00029   1st Qu.:0e+00   1st Qu.:0.00063   1st Qu.:0   </span></a>
+<a class="sourceLine" id="cb17-29" title="29"><span class="co">#&gt;  Median :0.00080   Median :0e+00   Median :0.00104   Median :0   </span></a>
+<a class="sourceLine" id="cb17-30" title="30"><span class="co">#&gt;  Mean   :0.00148   Mean   :0e+00   Mean   :0.00147   Mean   :0   </span></a>
+<a class="sourceLine" id="cb17-31" title="31"><span class="co">#&gt;  3rd Qu.:0.00180   3rd Qu.:0e+00   3rd Qu.:0.00187   3rd Qu.:0   </span></a>
+<a class="sourceLine" id="cb17-32" title="32"><span class="co">#&gt;  Max.   :0.01970   Max.   :7e-05   Max.   :0.00645   Max.   :0   </span></a>
+<a class="sourceLine" id="cb17-33" title="33"><span class="co">#&gt;  NA&#39;s   :38        NA&#39;s   :38      NA&#39;s   :95        NA&#39;s   :95  </span></a>
+<a class="sourceLine" id="cb17-34" title="34"><span class="co">#&gt;     pred_bm3            var3                  geometry    </span></a>
+<a class="sourceLine" id="cb17-35" title="35"><span class="co">#&gt;  Min.   :0.00000   Min.   :0.00000   MULTIPOLYGON :11419  </span></a>
+<a class="sourceLine" id="cb17-36" title="36"><span class="co">#&gt;  1st Qu.:0.00020   1st Qu.:0.00000   epsg:NA      :    0  </span></a>
+<a class="sourceLine" id="cb17-37" title="37"><span class="co">#&gt;  Median :0.00051   Median :0.00000   +proj=cea ...:    0  </span></a>
+<a class="sourceLine" id="cb17-38" title="38"><span class="co">#&gt;  Mean   :0.00147   Mean   :0.00000                        </span></a>
+<a class="sourceLine" id="cb17-39" title="39"><span class="co">#&gt;  3rd Qu.:0.00225   3rd Qu.:0.00000                        </span></a>
+<a class="sourceLine" id="cb17-40" title="40"><span class="co">#&gt;  Max.   :0.01866   Max.   :0.00013                        </span></a>
+<a class="sourceLine" id="cb17-41" title="41"><span class="co">#&gt;  NA&#39;s   :41        NA&#39;s   :41</span></a></code></pre></div>
+<p>We can see that the prediction values are now much more comparable, and thus a subset of the predictions will not contribute disproportionately to an ensemble.</p>
+<p>We also must calculate the ensemble weights, which must be manually created. For the example analysis, we use several weighting methods: equal weights (i.e., unweighted), AUC-based weights, TSS-based weights, and weights calculated as the inverse of the prediction variance. Each set of weights must sum to 1, or each row must sum to 1 in the case of the weights calculated as the inverse of the prediction variance. Note that when calculating evaluation metrics, a message is printed if any of the validation data points do not intersect with a prediction polygon.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" title="1"><span class="co"># Calculate ensemble weights</span></a>
+<a class="sourceLine" id="cb18-2" title="2">e.weights &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb18-3" title="3">  eSDM<span class="op">::</span><span class="kw">evaluation_metrics</span>(over1.sf, <span class="dv">1</span>, valid.data, <span class="st">&quot;pres_abs&quot;</span>), </a>
+<a class="sourceLine" id="cb18-4" title="4">  eSDM<span class="op">::</span><span class="kw">evaluation_metrics</span>(over2.sf, <span class="dv">1</span>, valid.data, <span class="st">&quot;pres_abs&quot;</span>), </a>
+<a class="sourceLine" id="cb18-5" title="5">  eSDM<span class="op">::</span><span class="kw">evaluation_metrics</span>(over3.sf, <span class="dv">1</span>, valid.data, <span class="st">&quot;pres_abs&quot;</span>)</a>
+<a class="sourceLine" id="cb18-6" title="6">)</a>
+<a class="sourceLine" id="cb18-7" title="7"><span class="co">#&gt; There were 83 validation points that did not overlap with a non-NA prediction polygon</span></a>
+<a class="sourceLine" id="cb18-8" title="8"><span class="co">#&gt; There were 171 validation points that did not overlap with a non-NA prediction polygon</span></a>
+<a class="sourceLine" id="cb18-9" title="9"><span class="co">#&gt; There were 84 validation points that did not overlap with a non-NA prediction polygon</span></a>
+<a class="sourceLine" id="cb18-10" title="10"></a>
+<a class="sourceLine" id="cb18-11" title="11">over.df.resc.var &lt;-<span class="st"> </span>over.sf.rescaled <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb18-12" title="12"><span class="st">  </span><span class="kw">select</span>(var1, var2, var3) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb18-13" title="13"><span class="st">  </span><span class="kw">st_set_geometry</span>(<span class="ot">NULL</span>)</a>
+<a class="sourceLine" id="cb18-14" title="14"></a>
+<a class="sourceLine" id="cb18-15" title="15">e.weights.unw &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>) <span class="op">/</span><span class="st"> </span><span class="dv">3</span></a>
+<a class="sourceLine" id="cb18-16" title="16">e.weights.auc &lt;-<span class="st"> </span><span class="kw">sapply</span>(e.weights, <span class="cf">function</span>(i) i[<span class="dv">1</span>]) <span class="op">/</span><span class="st"> </span><span class="kw">sum</span>(<span class="kw">sapply</span>(e.weights, <span class="cf">function</span>(i) i[<span class="dv">1</span>]))</a>
+<a class="sourceLine" id="cb18-17" title="17">e.weights.tss &lt;-<span class="st"> </span><span class="kw">sapply</span>(e.weights, <span class="cf">function</span>(i) i[<span class="dv">2</span>]) <span class="op">/</span><span class="st"> </span><span class="kw">sum</span>(<span class="kw">sapply</span>(e.weights, <span class="cf">function</span>(i) i[<span class="dv">2</span>]))</a>
+<a class="sourceLine" id="cb18-18" title="18">e.weights.var &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="kw">t</span>(<span class="kw">apply</span>(</a>
+<a class="sourceLine" id="cb18-19" title="19">  <span class="dv">1</span> <span class="op">/</span><span class="st"> </span>over.df.resc.var, <span class="dv">1</span>, <span class="cf">function</span>(i) {i <span class="op">/</span><span class="st"> </span><span class="kw">sum</span>(i, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)}</a>
+<a class="sourceLine" id="cb18-20" title="20">)))</a>
+<a class="sourceLine" id="cb18-21" title="21"></a>
+<a class="sourceLine" id="cb18-22" title="22">e.weights.unw</a>
+<a class="sourceLine" id="cb18-23" title="23"><span class="co">#&gt; [1] 0.3333333 0.3333333 0.3333333</span></a>
+<a class="sourceLine" id="cb18-24" title="24">e.weights.auc</a>
+<a class="sourceLine" id="cb18-25" title="25"><span class="co">#&gt; [1] 0.3564575 0.2859788 0.3575637</span></a>
+<a class="sourceLine" id="cb18-26" title="26">e.weights.tss</a>
+<a class="sourceLine" id="cb18-27" title="27"><span class="co">#&gt; [1] 0.3897645 0.2127986 0.3974369</span></a>
+<a class="sourceLine" id="cb18-28" title="28"><span class="kw">head</span>(e.weights.var)</a>
+<a class="sourceLine" id="cb18-29" title="29"><span class="co">#&gt;         var1      var2        var3</span></a>
+<a class="sourceLine" id="cb18-30" title="30"><span class="co">#&gt; 1 0.30739591 0.6897710 0.002833083</span></a>
+<a class="sourceLine" id="cb18-31" title="31"><span class="co">#&gt; 2 0.99305706        NA 0.006942942</span></a>
+<a class="sourceLine" id="cb18-32" title="32"><span class="co">#&gt; 3 0.99479068        NA 0.005209324</span></a>
+<a class="sourceLine" id="cb18-33" title="33"><span class="co">#&gt; 4 0.06759370 0.3232166 0.609189722</span></a>
+<a class="sourceLine" id="cb18-34" title="34"><span class="co">#&gt; 5 0.05685041 0.8348384 0.108311140</span></a>
+<a class="sourceLine" id="cb18-35" title="35"><span class="co">#&gt; 6 0.04114136 0.4182598 0.540598860</span></a></code></pre></div>
+<p>Finally, we can create the ensembles. We calculate the ensemble uncertainty values with the among-model variance.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" title="1"><span class="co">### Create ensembles</span></a>
+<a class="sourceLine" id="cb19-2" title="2"></a>
+<a class="sourceLine" id="cb19-3" title="3"><span class="co"># Unweighted; calculate CV because it is used in Fig. 4 plot</span></a>
+<a class="sourceLine" id="cb19-4" title="4">ens.sf.unw &lt;-<span class="st"> </span>eSDM<span class="op">::</span><span class="kw">ensemble_create</span>(</a>
+<a class="sourceLine" id="cb19-5" title="5">  over.sf.rescaled, <span class="kw">c</span>(<span class="st">&quot;pred_bm1&quot;</span>, <span class="st">&quot;pred_bm2&quot;</span>, <span class="st">&quot;pred_bm3&quot;</span>),  <span class="dt">w =</span> e.weights.unw, </a>
+<a class="sourceLine" id="cb19-6" title="6">  <span class="dt">x.var.idx =</span> <span class="ot">NULL</span></a>
+<a class="sourceLine" id="cb19-7" title="7">) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb19-8" title="8"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">SE =</span> <span class="kw">sqrt</span>(Var_ens), <span class="dt">CV =</span> SE <span class="op">/</span><span class="st"> </span>Pred_ens) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb19-9" title="9"><span class="st">  </span><span class="kw">select</span>(Pred_ens, SE, CV) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb19-10" title="10"><span class="st">  </span><span class="kw">st_set_agr</span>(<span class="st">&quot;constant&quot;</span>)</a>
+<a class="sourceLine" id="cb19-11" title="11"></a>
+<a class="sourceLine" id="cb19-12" title="12"><span class="co"># Weights based on AUC</span></a>
+<a class="sourceLine" id="cb19-13" title="13">ens.sf.wauc &lt;-<span class="st"> </span>eSDM<span class="op">::</span><span class="kw">ensemble_create</span>(</a>
+<a class="sourceLine" id="cb19-14" title="14">  over.sf.rescaled, <span class="kw">c</span>(<span class="st">&quot;pred_bm1&quot;</span>, <span class="st">&quot;pred_bm2&quot;</span>, <span class="st">&quot;pred_bm3&quot;</span>),  <span class="dt">w =</span> e.weights.auc, </a>
+<a class="sourceLine" id="cb19-15" title="15">  <span class="dt">x.var.idx =</span> <span class="ot">NULL</span></a>
+<a class="sourceLine" id="cb19-16" title="16">) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb19-17" title="17"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">SE =</span> <span class="kw">sqrt</span>(Var_ens)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb19-18" title="18"><span class="st">  </span><span class="kw">select</span>(Pred_ens, SE) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb19-19" title="19"><span class="st">  </span><span class="kw">st_set_agr</span>(<span class="st">&quot;constant&quot;</span>)</a>
+<a class="sourceLine" id="cb19-20" title="20"></a>
+<a class="sourceLine" id="cb19-21" title="21"><span class="co"># Weights based on TSS</span></a>
+<a class="sourceLine" id="cb19-22" title="22">ens.sf.wtss &lt;-<span class="st"> </span>eSDM<span class="op">::</span><span class="kw">ensemble_create</span>(</a>
+<a class="sourceLine" id="cb19-23" title="23">  over.sf.rescaled, <span class="kw">c</span>(<span class="st">&quot;pred_bm1&quot;</span>, <span class="st">&quot;pred_bm2&quot;</span>, <span class="st">&quot;pred_bm3&quot;</span>),  <span class="dt">w =</span> e.weights.tss, </a>
+<a class="sourceLine" id="cb19-24" title="24">  <span class="dt">x.var.idx =</span> <span class="ot">NULL</span></a>
+<a class="sourceLine" id="cb19-25" title="25">) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb19-26" title="26"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">SE =</span> <span class="kw">sqrt</span>(Var_ens)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb19-27" title="27"><span class="st">  </span><span class="kw">select</span>(Pred_ens, SE) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb19-28" title="28"><span class="st">  </span><span class="kw">st_set_agr</span>(<span class="st">&quot;constant&quot;</span>)</a>
+<a class="sourceLine" id="cb19-29" title="29"></a>
+<a class="sourceLine" id="cb19-30" title="30"><span class="co"># Weights based on the inverse of the variance</span></a>
+<a class="sourceLine" id="cb19-31" title="31">ens.sf.wvar &lt;-<span class="st"> </span>eSDM<span class="op">::</span><span class="kw">ensemble_create</span>(</a>
+<a class="sourceLine" id="cb19-32" title="32">  over.sf.rescaled, <span class="kw">c</span>(<span class="st">&quot;pred_bm1&quot;</span>, <span class="st">&quot;pred_bm2&quot;</span>, <span class="st">&quot;pred_bm3&quot;</span>),  <span class="dt">w =</span> e.weights.var, </a>
+<a class="sourceLine" id="cb19-33" title="33">  <span class="dt">x.var.idx =</span> <span class="ot">NULL</span></a>
+<a class="sourceLine" id="cb19-34" title="34">) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb19-35" title="35"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">SE =</span> <span class="kw">sqrt</span>(Var_ens)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb19-36" title="36"><span class="st">  </span><span class="kw">select</span>(Pred_ens, SE) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb19-37" title="37"><span class="st">  </span><span class="kw">st_set_agr</span>(<span class="st">&quot;constant&quot;</span>)</a></code></pre></div>
+<p>We could also have estimated the within-model ensemble uncertainty by using the <code>x.var.idx</code> argument, as demonstrated in the following code (not run).</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" title="1"><span class="co"># Create an ensemble and calculate within-model uncertainty; code not run</span></a>
+<a class="sourceLine" id="cb20-2" title="2">ens.sf.unw.wmv &lt;-<span class="st"> </span>eSDM<span class="op">::</span><span class="kw">ensemble_create</span>(</a>
+<a class="sourceLine" id="cb20-3" title="3">  over.sf.rescaled, <span class="kw">c</span>(<span class="st">&quot;pred_bm1&quot;</span>, <span class="st">&quot;pred_bm2&quot;</span>, <span class="st">&quot;pred_bm3&quot;</span>),  <span class="dt">w =</span> e.weights.unw,</a>
+<a class="sourceLine" id="cb20-4" title="4">  <span class="dt">x.var.idx =</span> <span class="kw">c</span>(var1, var2, var3)</a>
+<a class="sourceLine" id="cb20-5" title="5">) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb20-6" title="6"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">SE =</span> <span class="kw">sqrt</span>(Var_ens)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb20-7" title="7"><span class="st">  </span><span class="kw">select</span>(Pred_ens , SE)</a></code></pre></div>
+<p>Now we can calculate AUC and TSS scores for the ensembles and compare them to those of original and ensemble predictions. Again, the evaluation code is not run; the displayed table is Table 3 from Woodman <em>et al.</em> (in review).</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" title="1"><span class="co"># Calculate evaluation metrics for ensembles; code not run</span></a>
+<a class="sourceLine" id="cb21-2" title="2">names<span class="fl">.2</span> &lt;-<span class="st"> </span><span class="kw">c</span>(</a>
+<a class="sourceLine" id="cb21-3" title="3">  <span class="st">&quot;Ensemble – unweighted&quot;</span>, <span class="st">&quot;Ensemble – AUC-based weights&quot;</span>,</a>
+<a class="sourceLine" id="cb21-4" title="4">  <span class="st">&quot;Ensemble – TSS-based weights&quot;</span>, <span class="st">&quot;Ensemble – variance-based weights&quot;</span></a>
+<a class="sourceLine" id="cb21-5" title="5">)</a>
+<a class="sourceLine" id="cb21-6" title="6"></a>
+<a class="sourceLine" id="cb21-7" title="7">eval.lt.ens &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="kw">do.call</span>(rbind, <span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb21-8" title="8">  eSDM<span class="op">::</span><span class="kw">evaluation_metrics</span>(ens.sf.unw,  <span class="st">&quot;Pred_ens&quot;</span>, valid.data.lt, <span class="st">&quot;pres_abs&quot;</span>), </a>
+<a class="sourceLine" id="cb21-9" title="9">  eSDM<span class="op">::</span><span class="kw">evaluation_metrics</span>(ens.sf.wauc, <span class="st">&quot;Pred_ens&quot;</span>, valid.data.lt, <span class="st">&quot;pres_abs&quot;</span>), </a>
+<a class="sourceLine" id="cb21-10" title="10">  eSDM<span class="op">::</span><span class="kw">evaluation_metrics</span>(ens.sf.wtss, <span class="st">&quot;Pred_ens&quot;</span>, valid.data.lt, <span class="st">&quot;pres_abs&quot;</span>), </a>
+<a class="sourceLine" id="cb21-11" title="11">  eSDM<span class="op">::</span><span class="kw">evaluation_metrics</span>(ens.sf.wvar, <span class="st">&quot;Pred_ens&quot;</span>, valid.data.lt, <span class="st">&quot;pres_abs&quot;</span>)</a>
+<a class="sourceLine" id="cb21-12" title="12">))) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb21-13" title="13"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">Preds =</span> names<span class="fl">.2</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb21-14" title="14"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(Preds, <span class="dt">AUC_LT =</span> X1, <span class="dt">TSS_LT =</span> X2)</a>
+<a class="sourceLine" id="cb21-15" title="15"></a>
+<a class="sourceLine" id="cb21-16" title="16">eval.hr.ens &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="kw">do.call</span>(rbind, <span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb21-17" title="17">  eSDM<span class="op">::</span><span class="kw">evaluation_metrics</span>(ens.sf.unw,  <span class="st">&quot;Pred_ens&quot;</span>, valid.data.hr, <span class="st">&quot;pres_abs&quot;</span>), </a>
+<a class="sourceLine" id="cb21-18" title="18">  eSDM<span class="op">::</span><span class="kw">evaluation_metrics</span>(ens.sf.wauc, <span class="st">&quot;Pred_ens&quot;</span>, valid.data.hr, <span class="st">&quot;pres_abs&quot;</span>), </a>
+<a class="sourceLine" id="cb21-19" title="19">  eSDM<span class="op">::</span><span class="kw">evaluation_metrics</span>(ens.sf.wtss, <span class="st">&quot;Pred_ens&quot;</span>, valid.data.hr, <span class="st">&quot;pres_abs&quot;</span>), </a>
+<a class="sourceLine" id="cb21-20" title="20">  eSDM<span class="op">::</span><span class="kw">evaluation_metrics</span>(ens.sf.wvar, <span class="st">&quot;Pred_ens&quot;</span>, valid.data.hr, <span class="st">&quot;pres_abs&quot;</span>)</a>
+<a class="sourceLine" id="cb21-21" title="21">))) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb21-22" title="22"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">Preds =</span> names<span class="fl">.2</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb21-23" title="23"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(Preds, <span class="dt">AUC_HR =</span> X1, <span class="dt">TSS_HR =</span> X2) </a>
+<a class="sourceLine" id="cb21-24" title="24"></a>
+<a class="sourceLine" id="cb21-25" title="25">eval.combo.ens &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="kw">do.call</span>(rbind, <span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb21-26" title="26">  eSDM<span class="op">::</span><span class="kw">evaluation_metrics</span>(ens.sf.unw,  <span class="st">&quot;Pred_ens&quot;</span>, valid.data, <span class="st">&quot;pres_abs&quot;</span>), </a>
+<a class="sourceLine" id="cb21-27" title="27">  eSDM<span class="op">::</span><span class="kw">evaluation_metrics</span>(ens.sf.wauc, <span class="st">&quot;Pred_ens&quot;</span>, valid.data, <span class="st">&quot;pres_abs&quot;</span>), </a>
+<a class="sourceLine" id="cb21-28" title="28">  eSDM<span class="op">::</span><span class="kw">evaluation_metrics</span>(ens.sf.wtss, <span class="st">&quot;Pred_ens&quot;</span>, valid.data, <span class="st">&quot;pres_abs&quot;</span>), </a>
+<a class="sourceLine" id="cb21-29" title="29">  eSDM<span class="op">::</span><span class="kw">evaluation_metrics</span>(ens.sf.wvar, <span class="st">&quot;Pred_ens&quot;</span>, valid.data, <span class="st">&quot;pres_abs&quot;</span>)</a>
+<a class="sourceLine" id="cb21-30" title="30">))) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb21-31" title="31"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">Preds =</span> names<span class="fl">.2</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb21-32" title="32"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(Preds, <span class="dt">AUC =</span> X1, <span class="dt">TSS =</span> X2)</a></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" title="1"><span class="kw">read.csv</span>(<span class="kw">system.file</span>(<span class="st">&quot;extdata/Table3.csv&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;eSDM&quot;</span>)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb22-2" title="2"><span class="st">  </span><span class="kw">select</span>(Predictions, AUC, TSS, <span class="st">`</span><span class="dt">AUC-LT</span><span class="st">`</span> =<span class="st"> </span>AUC.LT, <span class="st">`</span><span class="dt">TSS-LT</span><span class="st">`</span> =<span class="st"> </span>TSS.LT, </a>
+<a class="sourceLine" id="cb22-3" title="3">         <span class="st">`</span><span class="dt">AUC-HR</span><span class="st">`</span> =<span class="st"> </span>AUC.HR, <span class="st">`</span><span class="dt">TSS-HR</span><span class="st">`</span> =<span class="st"> </span>TSS.HR) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb22-4" title="4"><span class="st">  </span>knitr<span class="op">::</span><span class="kw">kable</span>(<span class="dt">caption =</span> <span class="st">&quot;Evaluation metrics&quot;</span>, <span class="dt">digits =</span> <span class="dv">3</span>, <span class="dt">align =</span> <span class="st">&quot;lcccccc&quot;</span>)</a></code></pre></div>
+<table>
+<caption>Evaluation metrics</caption>
+<thead>
+<tr class="header">
+<th align="left">Predictions</th>
+<th align="center">AUC</th>
+<th align="center">TSS</th>
+<th align="center">AUC-LT</th>
+<th align="center">TSS-LT</th>
+<th align="center">AUC-HR</th>
+<th align="center">TSS-HR</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Model_B - original</td>
+<td align="center">0.912</td>
+<td align="center">0.717</td>
+<td align="center">0.732</td>
+<td align="center">0.374</td>
+<td align="center">0.963</td>
+<td align="center">0.824</td>
+</tr>
+<tr class="even">
+<td align="left">Model_H - original</td>
+<td align="center">0.734</td>
+<td align="center">0.414</td>
+<td align="center">0.620</td>
+<td align="center">0.284</td>
+<td align="center">0.772</td>
+<td align="center">0.471</td>
+</tr>
+<tr class="odd">
+<td align="left">Model_R - original</td>
+<td align="center">0.919</td>
+<td align="center">0.756</td>
+<td align="center">0.684</td>
+<td align="center">0.290</td>
+<td align="center">0.980</td>
+<td align="center">0.882</td>
+</tr>
+<tr class="even">
+<td align="left">Model_B - overlaid</td>
+<td align="center">0.916</td>
+<td align="center">0.742</td>
+<td align="center">0.732</td>
+<td align="center">0.380</td>
+<td align="center">0.967</td>
+<td align="center">0.856</td>
+</tr>
+<tr class="odd">
+<td align="left">Model_H - overlaid</td>
+<td align="center">0.735</td>
+<td align="center">0.406</td>
+<td align="center">0.620</td>
+<td align="center">0.286</td>
+<td align="center">0.772</td>
+<td align="center">0.460</td>
+</tr>
+<tr class="even">
+<td align="left">Model_R - overlaid</td>
+<td align="center">0.919</td>
+<td align="center">0.756</td>
+<td align="center">0.684</td>
+<td align="center">0.290</td>
+<td align="center">0.980</td>
+<td align="center">0.882</td>
+</tr>
+<tr class="odd">
+<td align="left">Ensemble - unweighted</td>
+<td align="center">0.915</td>
+<td align="center">0.772</td>
+<td align="center">0.699</td>
+<td align="center">0.345</td>
+<td align="center">0.972</td>
+<td align="center">0.888</td>
+</tr>
+<tr class="even">
+<td align="left">Ensemble - AUC-based weights</td>
+<td align="center">0.917</td>
+<td align="center">0.777</td>
+<td align="center">0.703</td>
+<td align="center">0.349</td>
+<td align="center">0.973</td>
+<td align="center">0.893</td>
+</tr>
+<tr class="odd">
+<td align="left">Ensemble - TSS-based weights</td>
+<td align="center">0.920</td>
+<td align="center">0.785</td>
+<td align="center">0.708</td>
+<td align="center">0.352</td>
+<td align="center">0.975</td>
+<td align="center">0.900</td>
+</tr>
+<tr class="even">
+<td align="left">Ensemble - variance-based weights</td>
+<td align="center">0.888</td>
+<td align="center">0.670</td>
+<td align="center">0.713</td>
+<td align="center">0.344</td>
+<td align="center">0.936</td>
+<td align="center">0.764</td>
+</tr>
+</tbody>
+</table>
+<p>We can see that the ensemble with weights based on TSS values had the highest scores of the ensemble predictions, and mostly higher scores that the original predictions. We can visualize this ensemble to compare it with known blue whale habitat.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" title="1"><span class="co"># Simple code to visualize ensemble created with weights based on TSS values</span></a>
+<a class="sourceLine" id="cb23-2" title="2"><span class="kw">plot_sf_3panel</span>(</a>
+<a class="sourceLine" id="cb23-3" title="3">  <span class="kw">rename</span>(ens.sf.wtss, <span class="dt">se =</span> SE), <span class="st">&quot;Pred_ens&quot;</span>, <span class="dt">main.txt =</span> <span class="st">&quot;Ensemble - TSS&quot;</span>, </a>
+<a class="sourceLine" id="cb23-4" title="4">  <span class="dt">map.base =</span> map.world</a>
+<a class="sourceLine" id="cb23-5" title="5">)</a></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<p>Below is code to visualize the unweighted ensembles and this ensemble (i.e., create (Figs. 4 and 5 in Woodman <em>et al.</em>) using custom functions (in ‘vignette_helper.R’ located at <code>system.file(&quot;eSDM_vignette_helper.R&quot;, package = &quot;eSDM&quot;)</code>) that leverage the <code>tmap</code> package to generate plots. However, by default this code is not run because these plots take several minutes to generate.</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" title="1"><span class="co">### Figure 4; code not run</span></a>
+<a class="sourceLine" id="cb24-2" title="2"></a>
+<a class="sourceLine" id="cb24-3" title="3"><span class="co"># Values passed to tmap_sdm - range of map</span></a>
+<a class="sourceLine" id="cb24-4" title="4">range.poly &lt;-<span class="st"> </span><span class="kw">st_sfc</span>(</a>
+<a class="sourceLine" id="cb24-5" title="5">  <span class="kw">st_polygon</span>(<span class="kw">list</span>(<span class="kw">matrix</span>(</a>
+<a class="sourceLine" id="cb24-6" title="6">    <span class="kw">c</span>(<span class="op">-</span><span class="dv">132</span>, <span class="dv">-132</span>, <span class="dv">-116</span>, <span class="dv">-116</span>, <span class="dv">-132</span>, <span class="fl">29.5</span>, <span class="dv">49</span>, <span class="dv">49</span>, <span class="fl">29.5</span>, <span class="fl">29.5</span>), <span class="dt">ncol =</span> <span class="dv">2</span></a>
+<a class="sourceLine" id="cb24-7" title="7">  ))),</a>
+<a class="sourceLine" id="cb24-8" title="8">  <span class="dt">crs =</span> <span class="dv">4326</span></a>
+<a class="sourceLine" id="cb24-9" title="9">)</a>
+<a class="sourceLine" id="cb24-10" title="10">rpoly.mat &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">st_bbox</span>(range.poly), <span class="dt">ncol =</span> <span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb24-11" title="11"></a>
+<a class="sourceLine" id="cb24-12" title="12"><span class="co"># Values passed to tmap_sdm - size of text labels and legend width</span></a>
+<a class="sourceLine" id="cb24-13" title="13">main.size &lt;-<span class="st"> </span><span class="fl">0.8</span></a>
+<a class="sourceLine" id="cb24-14" title="14">leg.size  &lt;-<span class="st"> </span><span class="fl">0.6</span></a>
+<a class="sourceLine" id="cb24-15" title="15">leg.width &lt;-<span class="st"> </span><span class="fl">0.45</span></a>
+<a class="sourceLine" id="cb24-16" title="16">grid.size &lt;-<span class="st"> </span><span class="fl">0.55</span></a>
+<a class="sourceLine" id="cb24-17" title="17"></a>
+<a class="sourceLine" id="cb24-18" title="18"><span class="co"># Values passed to tmap_sdm - color scale info</span></a>
+<a class="sourceLine" id="cb24-19" title="19">blp1 &lt;-<span class="st"> </span><span class="kw">tmap_sdm_help</span>(ens.sf.unw, <span class="st">&quot;Pred_ens&quot;</span>)</a>
+<a class="sourceLine" id="cb24-20" title="20">blp2 &lt;-<span class="st"> </span><span class="kw">tmap_sdm_help</span>(ens.sf.unw, <span class="st">&quot;CV&quot;</span>)</a>
+<a class="sourceLine" id="cb24-21" title="21"></a>
+<a class="sourceLine" id="cb24-22" title="22"><span class="co"># Plot of predictions (whales / km^-2)</span></a>
+<a class="sourceLine" id="cb24-23" title="23">tmap.obj1 &lt;-<span class="st"> </span><span class="kw">tmap_sdm</span>(</a>
+<a class="sourceLine" id="cb24-24" title="24">  ens.sf.unw, <span class="st">&quot;Pred_ens&quot;</span>, blp1, map.world, rpoly.mat, </a>
+<a class="sourceLine" id="cb24-25" title="25">  <span class="st">&quot;Unweighted ensemble - predictions&quot;</span>, </a>
+<a class="sourceLine" id="cb24-26" title="26">  main.size, leg.size, leg.width, grid.size</a>
+<a class="sourceLine" id="cb24-27" title="27">)</a>
+<a class="sourceLine" id="cb24-28" title="28"><span class="co"># Plot of SE values (with same color sceme as predictions)</span></a>
+<a class="sourceLine" id="cb24-29" title="29">tmap.obj2 &lt;-<span class="st"> </span><span class="kw">tmap_sdm</span>(</a>
+<a class="sourceLine" id="cb24-30" title="30">  ens.sf.unw, <span class="st">&quot;SE&quot;</span>, blp1, map.world, rpoly.mat, </a>
+<a class="sourceLine" id="cb24-31" title="31">  <span class="st">&quot;Unweighted ensemble - SE&quot;</span>, </a>
+<a class="sourceLine" id="cb24-32" title="32">  main.size, leg.size, leg.width, grid.size</a>
+<a class="sourceLine" id="cb24-33" title="33">)</a>
+<a class="sourceLine" id="cb24-34" title="34"><span class="co"># Plot of CV values</span></a>
+<a class="sourceLine" id="cb24-35" title="35">tmap.obj3 &lt;-<span class="st"> </span><span class="kw">tmap_sdm</span>(</a>
+<a class="sourceLine" id="cb24-36" title="36">  ens.sf.unw, <span class="st">&quot;CV&quot;</span>, blp2, map.world, rpoly.mat, </a>
+<a class="sourceLine" id="cb24-37" title="37">  <span class="st">&quot;Unweighted ensemble - CV&quot;</span>, </a>
+<a class="sourceLine" id="cb24-38" title="38">  main.size, leg.size, leg.width, grid.size</a>
+<a class="sourceLine" id="cb24-39" title="39">)</a>
+<a class="sourceLine" id="cb24-40" title="40"></a>
+<a class="sourceLine" id="cb24-41" title="41"><span class="co"># Generate plot</span></a>
+<a class="sourceLine" id="cb24-42" title="42"><span class="kw">tmap_arrange</span>(</a>
+<a class="sourceLine" id="cb24-43" title="43">  <span class="kw">list</span>(tmap.obj1, tmap.obj2, tmap.obj3), <span class="dt">ncol =</span> <span class="dv">3</span>, <span class="dt">asp =</span> <span class="ot">NULL</span>, <span class="dt">outer.margins =</span> <span class="fl">0.05</span></a>
+<a class="sourceLine" id="cb24-44" title="44">)</a></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" title="1"><span class="co">### Figure 5; code not run</span></a>
+<a class="sourceLine" id="cb25-2" title="2"></a>
+<a class="sourceLine" id="cb25-3" title="3"><span class="co"># Values passed to tmap_sdm - size of text labels and legend width</span></a>
+<a class="sourceLine" id="cb25-4" title="4">main.size &lt;-<span class="st"> </span><span class="fl">1.1</span></a>
+<a class="sourceLine" id="cb25-5" title="5">leg.size  &lt;-<span class="st"> </span><span class="fl">0.7</span></a>
+<a class="sourceLine" id="cb25-6" title="6">leg.width &lt;-<span class="st"> </span><span class="fl">0.6</span></a>
+<a class="sourceLine" id="cb25-7" title="7">grid.size &lt;-<span class="st"> </span><span class="fl">0.7</span></a>
+<a class="sourceLine" id="cb25-8" title="8"></a>
+<a class="sourceLine" id="cb25-9" title="9"><span class="co"># Values passed to tmap_sdm - color scale info</span></a>
+<a class="sourceLine" id="cb25-10" title="10">blp1b &lt;-<span class="st"> </span><span class="kw">tmap_sdm_help</span>(ens.sf.wtss, <span class="st">&quot;Pred_ens&quot;</span>)</a>
+<a class="sourceLine" id="cb25-11" title="11">blp2b &lt;-<span class="st"> </span><span class="kw">tmap_sdm_help_perc</span>(ens.sf.wtss, <span class="st">&quot;Pred_ens&quot;</span>)</a>
+<a class="sourceLine" id="cb25-12" title="12"></a>
+<a class="sourceLine" id="cb25-13" title="13"><span class="co"># Plot of predictions (whales / km^-2)</span></a>
+<a class="sourceLine" id="cb25-14" title="14">tmap.obj1 &lt;-<span class="st"> </span><span class="kw">tmap_sdm</span>(</a>
+<a class="sourceLine" id="cb25-15" title="15">  ens.sf.wtss, <span class="st">&quot;Pred_ens&quot;</span>, blp1, map.world, rpoly.mat, <span class="st">&quot;Ensemble-TSS - Predictions&quot;</span>, </a>
+<a class="sourceLine" id="cb25-16" title="16">  main.size, leg.size, leg.width, grid.size</a>
+<a class="sourceLine" id="cb25-17" title="17">)</a>
+<a class="sourceLine" id="cb25-18" title="18"><span class="co"># Plot of SE values (with same color sceme as predictions)</span></a>
+<a class="sourceLine" id="cb25-19" title="19">tmap.obj2 &lt;-<span class="st"> </span><span class="kw">tmap_sdm</span>(</a>
+<a class="sourceLine" id="cb25-20" title="20">  ens.sf.wtss, <span class="st">&quot;SE&quot;</span>, blp1, map.world, rpoly.mat, <span class="st">&quot;Ensemble-TSS - SE&quot;</span>, </a>
+<a class="sourceLine" id="cb25-21" title="21">  main.size, leg.size, leg.width, grid.size</a>
+<a class="sourceLine" id="cb25-22" title="22">)</a>
+<a class="sourceLine" id="cb25-23" title="23"><span class="co"># Plot of predictions (percentiles)</span></a>
+<a class="sourceLine" id="cb25-24" title="24">tmap.obj3 &lt;-<span class="st"> </span><span class="kw">tmap_sdm</span>(</a>
+<a class="sourceLine" id="cb25-25" title="25">  ens.sf.wtss, <span class="st">&quot;Pred_ens&quot;</span>, blp2b, map.world, rpoly.mat, <span class="st">&quot;Ensemble-TSS - Predictions&quot;</span>, </a>
+<a class="sourceLine" id="cb25-26" title="26">  main.size, leg.size, leg.width, grid.size</a>
+<a class="sourceLine" id="cb25-27" title="27">)</a>
+<a class="sourceLine" id="cb25-28" title="28"><span class="co"># Plot of predictions (percentiles) with combined validation data presence points</span></a>
+<a class="sourceLine" id="cb25-29" title="29">tmap.obj4 &lt;-<span class="st"> </span><span class="kw">tmap_sdm</span>(</a>
+<a class="sourceLine" id="cb25-30" title="30">  ens.sf.wtss, <span class="st">&quot;Pred_ens&quot;</span>, blp2b, map.world, rpoly.mat, <span class="st">&quot;Ensemble-TSS - Predictions&quot;</span>, </a>
+<a class="sourceLine" id="cb25-31" title="31">  main.size, leg.size, leg.width, grid.size, <span class="dt">t.alpha =</span> <span class="fl">0.8</span></a>
+<a class="sourceLine" id="cb25-32" title="32">) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb25-33" title="33"><span class="st">  </span><span class="kw">tm_shape</span>(<span class="kw">filter</span>(valid.data, pres_abs <span class="op">==</span><span class="st"> </span><span class="dv">1</span>)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb25-34" title="34"><span class="st">  </span><span class="kw">tm_dots</span>(<span class="dt">col =</span> <span class="st">&quot;black&quot;</span>, <span class="dt">size =</span> <span class="fl">0.04</span>, <span class="dt">shape =</span> <span class="dv">19</span>)</a>
+<a class="sourceLine" id="cb25-35" title="35"></a>
+<a class="sourceLine" id="cb25-36" title="36"><span class="co"># Generate plot</span></a>
+<a class="sourceLine" id="cb25-37" title="37"><span class="kw">tmap_arrange</span>(</a>
+<a class="sourceLine" id="cb25-38" title="38">  <span class="kw">list</span>(tmap.obj1, tmap.obj2, tmap.obj3, tmap.obj4), <span class="dt">ncol =</span> <span class="dv">2</span>, <span class="dt">nrow =</span> <span class="dv">2</span>, </a>
+<a class="sourceLine" id="cb25-39" title="39">  <span class="dt">asp =</span> <span class="ot">NULL</span>, <span class="dt">outer.margins =</span> <span class="fl">0.05</span></a>
+<a class="sourceLine" id="cb25-40" title="40">)</a></code></pre></div>
+</div>
+<div id="references" class="section level2">
+<h2>References</h2>
+<p>Becker, E., Forney, K., Fiedler, P., Barlow, J., Chivers, S., Edwards, C., … Redfern, J. (2016). Moving towards dynamic ocean management: how well do modeled ocean products predict species distributions? Remote Sensing, 8, 149. 10.3390/rs8020149</p>
+<p>Hazen, E.L., Palacios, D.M., Forney, K.A., Howell, E.A., Becker, E., Hoover, A.L., … Bailey, H. (2017). WhaleWatch: a dynamic management tool for predicting blue whale density in the California Current. Journal of Applied Ecology, 54, 1415-1428. 10.1111/1365-2664.12820</p>
+<p>Irvine, L.M., Mate, B.R., Winsor, M.H., Palacios, D.M., Bograd, S.J., Costa, D.P. &amp; Bailey, H. (2014). Spatial and temporal occurrence of blue whales off the U.S. West Coast, with implications for management. PLoS One, 9, e102959. 10.1371/journal.pone.0102959</p>
+<p>Redfern, J.V., Moore, T.J., Fiedler, P.C., de Vos, A., Brownell, R.L., Forney, K.A., … Heikkinen, R. (2017). Predicting cetacean distributions in data-poor marine ecosystems. Diversity and Distributions, 23, 394-408. 10.1111/ddi.12537</p>
+<p>Woodman, S.M., Forney, K.A., Becker, E.A., DeAngelis, M.L., Hazen, E.L., Palacios, D.M., Redfern, J.V. (in review). eSDM: A tool for creating and exploring ensembles of predictions from species distribution and abundance models.</p>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
