@@ -88,17 +88,12 @@ ui.prettyPlot <- function() {
                     conditionalPanel(
                       condition = "output.pretty_display_toplot_flag",
                       fluidRow(
-                        column(
-                          width = 6,
-                          actionButton("pretty_update_toplot_show", "Update saved map parameters"),
-                          tags$span(textOutput("pretty_update_message"), style = "color: blue;")
-                        ),
-                        column(
-                          width = 6,
-                          actionButton("pretty_toplot_remove_execute", "Remove saved map"),
-                          textOutput("pretty_toplot_remove_text")
-                        )
-                      )
+                        column(6, actionButton("pretty_update_toplot_show", "Update saved map parameters")),
+                        column(6, actionButton("pretty_toplot_remove_execute", "Remove saved map"))
+                      ),
+                      tags$br(),
+                      tags$span(textOutput("pretty_update_message"), style = "color: blue;"),
+                      textOutput("pretty_toplot_remove_text") #in "_toplot.R"
                     )
                   )
                 )
@@ -355,30 +350,34 @@ ui.prettyPlot <- function() {
                     fluidRow(
                       column(
                         width = 6,
-                        numericInput("pretty_margin_in1", tags$h5("Inner margin - bottom"), value = 0.05, min = 0, step = 0.01),
-                        numericInput("pretty_margin_in3", tags$h5("Inner margin - top"), value = 0.02, min = 0, step = 0.01),
-                        numericInput("pretty_margin_out", tags$h5("Outer margin"), value = 0.03, min = 0, step = 0.01)
+                        numericInput("pretty_margin_in1", tags$h5("Inner margin - bottom"), value = 0.02, min = 0, step = 0.01),
+                        numericInput("pretty_margin_in3", tags$h5("Inner margin - top"), value = 0.00, min = 0, step = 0.01),
+                        numericInput("pretty_margin_out", tags$h5("Outer margin"), value = 0.02, min = 0, step = 0.01)
                       ),
                       column(
                         width = 6,
-                        numericInput("pretty_margin_in2", tags$h5("Inner margin - left"), value = 0.05, min = 0, step = 0.01),
-                        numericInput("pretty_margin_in4", tags$h5("Inner margin - right"), value = 0.02, min = 0, step = 0.01)
+                        numericInput("pretty_margin_in2", tags$h5("Inner margin - left"), value = 0.02, min = 0, step = 0.01),
+                        numericInput("pretty_margin_in4", tags$h5("Inner margin - right"), value = 0.00, min = 0, step = 0.01)
                       )
                     )
                   )
                 )
               ),
-              ################################################## Coordinate grid lines and labels
+              ################################################## Coordinate grid marks and labels
               column(
                 width = 4,
-                tags$strong("Coordinate grid lines and labels"),
+                tags$strong("Coordinate grid marks and labels"),
                 fluidRow(
                   box(
                     width = 12,
-                    checkboxInput("pretty_tick", "Include coordinate grid lines", value = TRUE),
+                    checkboxInput("pretty_tick", "Include coordinate grid marks and labels", value = TRUE),
                     conditionalPanel(
                       condition = "input.pretty_tick",
-                      helpText("Grid line start and interval units are the same as the units of the specified coordinate system.",
+                      tags$hr(),
+                      checkboxGroupInput("pretty_tick_which", label = NULL,
+                                         choices = list("Include grid lines" = 1, "Include tick marks" = 2),
+                                         selected = 2),
+                      helpText("Grid mark start and interval units are the same as the units of the specified coordinate system.",
                                "The range of these values must adhere to the requirements specified in the map range section.",
                                tags$br(),
                                "Size and width values are relative to 1 (the default size)"),
@@ -387,29 +386,25 @@ ui.prettyPlot <- function() {
                           width = 6,
                           uiOutput("pretty_tick_lon_start_uiOut_numeric"),
                           uiOutput("pretty_tick_lat_start_uiOut_numeric"),
-                          numericInput("pretty_tick_lw", tags$h5("Grid line width"), value = 1.0, min = 0.1, step = 0.1),
-                          colourpicker::colourInput("pretty_tick_color", tags$h5("Click to select color for coordinate grid lines"),
-                                                    value = "#D6D6D6", showColour = "background")
+                          numericInput("pretty_tick_lw", tags$h5("Grid mark width"), value = 1.0, min = 0.1, step = 0.1),
+                          colourpicker::colourInput("pretty_tick_color", tags$h5("Click to select color for coordinate grid marks"),
+                                                    value = "black", showColour = "background")
                         ),
                         column(
                           width = 6,
                           uiOutput("pretty_tick_lon_interval_uiOut_numeric"),
                           uiOutput("pretty_tick_lat_interval_uiOut_numeric"),
-                          numericInput("pretty_tick_alpha", tags$h5("Grid line transparency (1: solid; 0: transparent)"),
+                          numericInput("pretty_tick_alpha", tags$h5("Grid mark transparency (1: solid; 0: transparent)"),
                                        value = 1.0, min = 0, max = 1, step = 0.1)
                         )
                       ),
                       tags$hr(),
-                      checkboxInput("pretty_tick_label_inc", "Include coordinate labels", value = TRUE),
-                      conditionalPanel(
-                        condition = "input.pretty_tick_label_inc",
-                        helpText("To include coordinate labels without grid lines, set 'Grid line transparency' to 0"),
-                        fluidRow(
-                          column(6, radioButtons("pretty_tick_label_inout", tags$h5("Coordinate label location"),
-                                                 choices = list("Inside frame" = 1, "Outside frame" = 2), selected = 1)),
-                          column(6, numericInput("pretty_tick_label_size", tags$h5("Coordinate label size"),
-                                                 value = 1.0, min = 0.1, step = 0.1))
-                        )
+                      tags$span(textOutput("pretty_tick_label_message"), style = "color: red;"),
+                      fluidRow(
+                        column(6, radioButtons("pretty_tick_label_inout", tags$h5("Coordinate label location"),
+                                               choices = list("Inside frame" = 1, "Outside frame" = 2), selected = 2)),
+                        column(6, numericInput("pretty_tick_label_size", tags$h5("Coordinate label size"),
+                                               value = 1.0, min = 0.1, step = 0.1))
                       )
                     )
                   )

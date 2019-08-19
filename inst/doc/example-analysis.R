@@ -8,8 +8,6 @@ knitr::opts_chunk$set(
 library(dplyr)
 library(eSDM)
 library(lwgeom)
-library(maps)
-library(maptools)
 library(sf)
 
 source(system.file("eSDM_vignette_helper.R", package = "eSDM"), local = TRUE, echo = FALSE)
@@ -25,7 +23,10 @@ model.b.sf <- readRDS(system.file("extdata/Predictions_Beckeretal2016.rds", pack
 model.b.sf
 
 # Make base map
-map.world <- st_geometry(st_as_sf(map('world', plot = FALSE, fill = TRUE)))
+map.world <- eSDM::gshhg.l.L16
+
+# Other option for making base map
+# map.world <- st_geometry(st_as_sf(maps::map('world', plot = FALSE, fill = TRUE)))
 
 ## ---- fig.width=7--------------------------------------------------------
 plot_sf_3panel(model.b.sf, "pred_bm", main.txt = "Model_B - ", map.base = map.world)
@@ -34,7 +35,7 @@ plot_sf_3panel(model.b.sf, "pred_bm", main.txt = "Model_B - ", map.base = map.wo
 # Import, process, and plot Model_H predictions
 # model.h <- read.csv("Predictions_Hazenetal2017.csv")
 model.h.sf <- readRDS(system.file("extdata/Predictions_Hazenetal2017.rds", package = "eSDM")) %>% 
-  select(lon, lat, pred_bm, se) %>%
+  dplyr::select(lon, lat, pred_bm, se) %>%
   eSDM::pts2poly_centroids(0.25 / 2, crs = 4326, agr = "constant")
 
 model.h.sf
@@ -89,13 +90,13 @@ graphics::box()
 # Convert SE values to variance
 model.b.sf <- model.b.sf %>% 
   mutate(variance = se^2) %>% 
-  select(pred_bm, se, variance)
+  dplyr::select(pred_bm, se, variance)
 model.h.sf <- model.h.sf %>% 
   mutate(variance = se^2) %>% 
-  select(pred_bm, se, variance)
+  dplyr::select(pred_bm, se, variance)
 model.r.sf <- model.r.sf %>% 
   mutate(variance = se^2) %>% 
-  select(pred_bm, se, variance)
+  dplyr::select(pred_bm, se, variance)
 
 ## ------------------------------------------------------------------------
 # Perform overlay, and convert overlaid uncertainty values to SEs
@@ -108,7 +109,7 @@ over3.sf <- eSDM::overlay_sdm(base.geom, model.r.sf, c("pred_bm", "variance"), 5
 
 over3.sfb <- model.r.sf %>% 
   st_set_geometry(NULL) %>% 
-  select(pred_bm, variance) %>% 
+  dplyr::select(pred_bm, variance) %>% 
   st_sf(geometry = base.geom, agr = "constant") %>% 
   dplyr::mutate(se = sqrt(variance))
 all.equal(over3.sf, over3.sfb)
@@ -185,16 +186,16 @@ valid.data %>%
 ## ------------------------------------------------------------------------
 read.csv(system.file("extdata/Table3.csv", package = "eSDM")) %>%
   filter(grepl("Model_", Predictions)) %>% 
-  select(Predictions, AUC, TSS, `AUC-LT` = AUC.LT, `TSS-LT` = TSS.LT, 
+  dplyr::select(Predictions, AUC, TSS, `AUC-LT` = AUC.LT, `TSS-LT` = TSS.LT, 
          `AUC-HR` = AUC.HR, `TSS-HR` = TSS.HR) %>% 
   knitr::kable(caption = "Evaluation metrics", digits = 3, align = "lcccccc")
 
 ## ------------------------------------------------------------------------
 # Rescale predictions
 over.sf <- bind_cols(
-  over1.sf %>% st_set_geometry(NULL) %>% select(pred_bm1 = pred_bm, var1 = variance), 
-  over2.sf %>% st_set_geometry(NULL) %>% select(pred_bm2 = pred_bm, var2 = variance), 
-  over3.sf %>% st_set_geometry(NULL) %>% select(pred_bm3 = pred_bm, var3 = variance)
+  over1.sf %>% st_set_geometry(NULL) %>% dplyr::select(pred_bm1 = pred_bm, var1 = variance), 
+  over2.sf %>% st_set_geometry(NULL) %>% dplyr::select(pred_bm2 = pred_bm, var2 = variance), 
+  over3.sf %>% st_set_geometry(NULL) %>% dplyr::select(pred_bm3 = pred_bm, var3 = variance)
 ) %>% 
   st_sf(geometry = base.geom, agr = "constant")
 
@@ -219,7 +220,7 @@ e.weights <- list(
 )
 
 over.df.resc.var <- over.sf.rescaled %>% 
-  select(var1, var2, var3) %>% 
+  dplyr::select(var1, var2, var3) %>% 
   st_set_geometry(NULL)
 
 e.weights.unw <- c(1, 1, 1) / 3
@@ -243,7 +244,7 @@ ens.sf.unw <- eSDM::ensemble_create(
   x.var.idx = NULL
 ) %>% 
   mutate(SE = sqrt(Var_ens), CV = SE / Pred_ens) %>% 
-  select(Pred_ens, SE, CV) %>% 
+  dplyr::select(Pred_ens, SE, CV) %>% 
   st_set_agr("constant")
 
 # Weights based on AUC
@@ -252,7 +253,7 @@ ens.sf.wauc <- eSDM::ensemble_create(
   x.var.idx = NULL
 ) %>% 
   mutate(SE = sqrt(Var_ens)) %>% 
-  select(Pred_ens, SE) %>% 
+  dplyr::select(Pred_ens, SE) %>% 
   st_set_agr("constant")
 
 # Weights based on TSS
@@ -261,7 +262,7 @@ ens.sf.wtss <- eSDM::ensemble_create(
   x.var.idx = NULL
 ) %>% 
   mutate(SE = sqrt(Var_ens)) %>% 
-  select(Pred_ens, SE) %>% 
+  dplyr::select(Pred_ens, SE) %>% 
   st_set_agr("constant")
 
 # Weights based on the inverse of the variance
@@ -270,7 +271,7 @@ ens.sf.wvar <- eSDM::ensemble_create(
   x.var.idx = NULL
 ) %>% 
   mutate(SE = sqrt(Var_ens)) %>% 
-  select(Pred_ens, SE) %>% 
+  dplyr::select(Pred_ens, SE) %>% 
   st_set_agr("constant")
 
 ## ---- eval=FALSE---------------------------------------------------------
@@ -280,7 +281,7 @@ ens.sf.wvar <- eSDM::ensemble_create(
 #    x.var.idx = c(var1, var2, var3)
 #  ) %>%
 #    mutate(SE = sqrt(Var_ens)) %>%
-#    select(Pred_ens , SE)
+#    dplyr::select(Pred_ens , SE)
 
 ## ---- eval=FALSE---------------------------------------------------------
 #  # Calculate evaluation metrics for ensembles; code not run
@@ -318,19 +319,20 @@ ens.sf.wvar <- eSDM::ensemble_create(
 
 ## ------------------------------------------------------------------------
 read.csv(system.file("extdata/Table3.csv", package = "eSDM")) %>%
-  select(Predictions, AUC, TSS, `AUC-LT` = AUC.LT, `TSS-LT` = TSS.LT, 
+  dplyr::select(Predictions, AUC, TSS, `AUC-LT` = AUC.LT, `TSS-LT` = TSS.LT, 
          `AUC-HR` = AUC.HR, `TSS-HR` = TSS.HR) %>% 
   knitr::kable(caption = "Evaluation metrics", digits = 3, align = "lcccccc")
 
 ## ---- fig.width=7--------------------------------------------------------
 # Simple code to visualize ensemble created with weights based on TSS values
 plot_sf_3panel(
-  rename(ens.sf.wtss, se = SE), "Pred_ens", main.txt = "Ensemble - TSS", 
+  rename(ens.sf.wtss, se = SE), "Pred_ens", main.txt = "Ensemble-TSS - ", 
   map.base = map.world
 )
 
 ## ---- fig.width=7, fig.height=4, eval=FALSE------------------------------
 #  ### Figure 4; code not run
+#  library(tmap)
 #  
 #  # Values passed to tmap_sdm - range of map
 #  range.poly <- st_sfc(
@@ -343,8 +345,8 @@ plot_sf_3panel(
 #  
 #  # Values passed to tmap_sdm - size of text labels and legend width
 #  main.size <- 0.8
-#  leg.size  <- 0.6
-#  leg.width <- 0.45
+#  leg.size  <- 0.55
+#  leg.width <- 0.43
 #  grid.size <- 0.55
 #  
 #  # Values passed to tmap_sdm - color scale info
@@ -406,7 +408,7 @@ plot_sf_3panel(
 #  # Plot of predictions (percentiles) with combined validation data presence points
 #  tmap.obj4 <- tmap_sdm(
 #    ens.sf.wtss, "Pred_ens", blp2b, map.world, rpoly.mat, "Ensemble-TSS - Predictions",
-#    main.size, leg.size, leg.width, grid.size, t.alpha = 0.8
+#    main.size, leg.size, leg.width, grid.size
 #  ) +
 #    tm_shape(filter(valid.data, pres_abs == 1)) +
 #    tm_dots(col = "black", size = 0.04, shape = 19)

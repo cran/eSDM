@@ -123,8 +123,7 @@ plot_sf_3panel <- function(obj.sf, col.data.pred, main.txt = "",
 
 
 ###############################################################################
-# Code for generating Fig 4. and Fig. 5 from Woodman et al. (in review)
-# Uses tmap package to generate plots
+# Code for generating maps of SDMs using the tmap package
 
 #------------------------------------------------------------------------------
 # Return a list with the break point values, legend text, and color palette
@@ -168,7 +167,8 @@ tmap_sdm_help_perc <- function(x, x.col, pal.len = 10) {
 # Create tmap maps
 tmap_sdm <- function(tmap.obj, t.col, t.blp, t.map, t.mat, t.title,
                      t.main.size, t.leg.size, t.leg.width, t.grid.size,
-                     t.alpha = 1) {
+                     t.alpha = 1, t.grid.col = "black",
+                     t.ticks = TRUE, t.lines = FALSE) {
   tm_shape(t.map, bbox = t.mat, projection = 4326) +
     tm_polygons(col = "tan", border.col = NA, alpha = 1, lty = 1, lwd = 1) +
 
@@ -180,19 +180,17 @@ tmap_sdm <- function(tmap.obj, t.col, t.blp, t.map, t.mat, t.title,
     tm_layout(bg.color = "white", legend.bg.color = "white",
               main.title = t.title,
               main.title.position = "center",
-              main.title.size = t.main.size, #0.8,
+              main.title.size = t.main.size,
               inner.margins = c(0.02, 0.02, 0, 0), outer.margins = 0.03) +
     tm_legend(show = TRUE, outside = FALSE, position = c("right", "top"),
-              text.size = t.leg.size, #0.6,
-              width = t.leg.width, #0.45,
+              text.size = t.leg.size,
+              width = t.leg.width,
               frame = "black") +
-    tm_grid(x = seq(-135, -120, by = 5), y = seq(30, 50, by = 5),
-            col = "grey", lwd = 1, alpha = 1,
-            labels.inside.frame = FALSE, labels.size = t.grid.size, #0.6,
-            labels.rot = c(0, 90),
-            labels.format = list(fun = function(i) {
-              parse(text = paste(i, "*degree"))
-            }))
+    tm_graticules(x = seq(-135, -120, by = 5), y = seq(30, 50, by = 5),
+                  col = t.grid.col, lwd = 1, alpha = 1,
+                  ticks = t.ticks, lines = t.lines,
+                  labels.inside.frame = FALSE, labels.size = t.grid.size,
+                  labels.rot = c(0, 90))
 }
 
 ###############################################################################
