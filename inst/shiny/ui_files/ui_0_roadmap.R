@@ -59,10 +59,11 @@ ui.roadmap <- function() {
             width = 12,
             tags$h5(
               tags$strong("Citation"),
-              tags$p("Woodman, S.M., Forney, K.A., Becker, E.A., DeAngelis, M.L., Hazen, E.L., Palacios, D.M., and Redfern, J.V.",
-                     "(in press). eSDM: A tool for creating and exploring ensembles",
-                     "of predictions from species distribution and abundance models.",
-                     tags$em("Methods in Ecology and Evolution."))
+              tags$p("Woodman, S.M., Forney, K.A., Becker, E.A., DeAngelis, M.L., Hazen, E.L., Palacios, D.M., Redfern, J.V.",
+                     "(2019). eSDM: A tool for creating and exploring ensembles of predictions",
+                     "from species distribution and abundance models.",
+                     tags$em("Methods Ecol Evol."), "2019;00:1-11. doi:10.1111/2041-210X.13283"),
+              tags$a("Woodman et al. 2019 - PDF", href = "https://doi.org/10.1111/2041-210X.13283")
             )
           )
         )
@@ -78,13 +79,13 @@ ui.roadmap <- function() {
                     "Ensemble tool for predictions from Species Distribution Models (eSDM) is a user-friendly spatial tool",
                     "that includes this graphical user interface (GUI), making eSDM accessible to non-R users.",
                     "eSDM allows users to overlay SDM predictions onto a single base geometry, ",
-                    "create ensembles of overlaid predictions via weighted or unweighted averages",
-                    "and their associated uncertainty,",
+                    "create ensembles of overlaid predictions and their associated uncertainty",
+                    "via weighted or unweighted averages,",
                     "calculate performance metrics for each set of predictions and for resulting ensembles,",
                     "and visually compare predictions."),
             tags$h5("This roadmap provides a brief overview of the various sections of the GUI,",
-                    "and the order in which you can use them.",
-                    "The roadmap is NOT intended to replace the GUI manual, and you should refer to the manual for",
+                    "as well as the order in which you can use these sections",
+                    "The roadmap is NOT intended to replace the GUI manual. You should refer to the manual for",
                     "technical details, such as format requirements of input files."),
             #------------------------------------------------------------------
             tags$h5(tags$strong("1) Import predictions or load workspace:"),
@@ -94,7 +95,7 @@ ui.roadmap <- function() {
                     tags$em("Load a saved GUI workspace"), "section of this tab.",
                     "You cannot use any of the other sections of the GUI until you perform one of these two steps."),
             tags$h5("Note: you can download zip files with sample data (SDM predictions, regional polygons, and validation data)",
-                    "or the data used in the example analysis of Woodman et al. (in press)",
+                    "or the data used in the example analysis of Woodman et al. (2019)",
                     "by clicking the", tags$em("Download sample data"), "or the",
                     tags$em("Download manuscript data"), "buttons below, respectively.",
                     "These data can be a useful reference for data format requirements."),
@@ -102,7 +103,7 @@ ui.roadmap <- function() {
             tags$h5(tags$strong("2) Overlay predictions:"),
                     "In the 'Overlay Predictions' tab, you can overlay imported SDM predictions (i.e., original predictions)",
                     "onto a base geometry so all predictions have the same spatial resolution and coordinate system.",
-                    "You can also import a study area polygon= and/or an erasing polygon to",
+                    "You can also import a study area polygon and/or an erasing polygon to",
                     "clip or erase area from the base geometry, respectively",
                     "(e.g., to specify a study area or erase land from marine predictions.)"),
             #------------------------------------------------------------------
@@ -119,7 +120,7 @@ ui.roadmap <- function() {
                     "Within the 'Evaluation Metrics', 'High Quality Maps', and 'Export Predictions' tabs",
                     "you can import validation data and calculate evaluation metrics (AUC, TSS, RMSE), plot high quality maps,",
                     "and export predictions from the GUI, respectively.",
-                    "Predictions can be exported to an Excel .csv file, a shapefile, or a KML/KMZ file."),
+                    "Predictions can be exported to a CSV file, a shapefile, or a KML/KMZ file."),
             tags$h5("Note that you only need imported (original) predictions to use these sections.",
                     "Thus, you can use the GUI for simply visualizing or evaluating predictions,",
                     "even if you have no need to create ensembles."),
@@ -155,7 +156,9 @@ ui.roadmap <- function() {
               tags$li("If your download (e.g., of manuscript data) is a 'download.htm' file, cancel and try the download again.")
             ),
             tags$br(),
-            tags$h5("Contact Sam Woodman (sam.woodman@noaa.gov) with any questions."),
+            tags$h5("Submit suggestions and bug reports at",
+                    tags$a("https://github.com/smwoodman/eSDM/issues,", href = "https://github.com/smwoodman/eSDM/issues"),
+                    "or contact Sam Woodman (sam.woodman@noaa.gov) with any questions"),
             tags$br(),
             downloadButton("download_data_manuscript", "Download manuscript data"),
             downloadButton("download_data_sample", "Download sample data"),
