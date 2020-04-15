@@ -11,14 +11,6 @@
 #'   while \code{FALSE} indicates that the data is presence/absence.
 #'   See details for differences in data processing based on this flag.
 #'
-#' @importFrom methods slot
-#' @importFrom ROCR performance
-#' @importFrom ROCR prediction
-#' @importFrom sf st_crs
-#' @importFrom sf st_intersects
-#' @importFrom sf st_set_geometry
-#' @importFrom stats na.omit
-#'
 #' @details If \code{count.flag == TRUE}, then \code{eSDM::model_abundance(x, x.idx, FALSE)} will be run
 #'   to calculate predicted abundance and thus calculate RMSE.
 #'   Note that this assumes the data in column \code{x.idx} of \code{x} are density values.
@@ -32,9 +24,9 @@
 #'   If \code{count.flag == FALSE}, the RMSE value will be \code{NA}
 #'
 #' @examples
-#' evaluation_metrics(preds.1, 1, validation.data, "sight")
+#' evaluation_metrics(preds.1, 2, validation.data, "sight")
 #'
-#' evaluation_metrics(preds.1, "Density", validation.data, "count", TRUE)
+#' evaluation_metrics(preds.1, "Density2", validation.data, "count", TRUE)
 #'
 #' @export
 evaluation_metrics <- function(x, x.idx, y, y.idx, count.flag = FALSE) {
@@ -101,8 +93,8 @@ evaluation_metrics <- function(x, x.idx, y, y.idx, count.flag = FALSE) {
   # Data kept as separate vectors because in mapply() accessing several vector
   #   objects is faster than accessing one data.frame
   if (count.flag) {
-    x.abund <- unname(unlist(eSDM::model_abundance(x, x.idx, sum.abund = FALSE)))
     y.sight <- ifelse(y.data >= 1, 1, 0)
+    x.abund <- unname(unlist(eSDM::model_abundance(x, x.idx, sum.abund = FALSE)))
     y.count <- y.data
 
   } else {
@@ -110,16 +102,13 @@ evaluation_metrics <- function(x, x.idx, y, y.idx, count.flag = FALSE) {
       stop("The data in column y.idx of object y must all be numbers 0 or 1")
     }
 
-    x.abund <- as.numeric(NA)
     y.sight <- y.data
+    x.abund <- as.numeric(NA)
     y.count <- as.numeric(NA)
   }
-  rm(y.data)
 
   stopifnot(
-    is.numeric(x.abund),
-    is.numeric(y.sight),
-    is.numeric(y.count)
+    is.numeric(y.sight), is.numeric(x.abund), is.numeric(y.count)
   )
 
 
@@ -133,8 +122,9 @@ evaluation_metrics <- function(x, x.idx, y, y.idx, count.flag = FALSE) {
     }
   }, yx.sgbp, seq_along(yx.sgbp), SIMPLIFY = FALSE)
 
-  xy.data.overlap <- data.frame(do.call(rbind, xy.data.overlap.list))
-  names(xy.data.overlap) <- c("dens", "sight", "abund", "count")
+  xy.data.overlap <- data.frame(do.call(rbind, xy.data.overlap.list)) %>%
+    set_names(c("dens", "sight", "abund", "count")) %>%
+    filter(!is.na(.data$dens), !is.na(.data$sight))
 
 
   #------------------------------------------------------------------
@@ -149,7 +139,9 @@ evaluation_metrics <- function(x, x.idx, y, y.idx, count.flag = FALSE) {
 
   # RMSE
   m3 <- ifelse(
-    count.flag, esdm_rmse(xy.data.overlap[[3]], xy.data.overlap[[4]]), NA
+    count.flag,
+    esdm_rmse(xy.data.overlap[[3]], xy.data.overlap[[4]], na.rm = TRUE),
+    NA
   )
 
   #------------------------------------------------------------------
