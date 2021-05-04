@@ -33,6 +33,22 @@
 #'   a variant of the traditional spatial problem. Geo-Processing, 1, 297-312.
 #'
 #' @examples
+#' pol1.geom <- sf::st_sfc(
+#'   sf::st_polygon(list(rbind(c(1,1), c(3,1), c(3,3), c(1,3), c(1,1)))),
+#'   crs = 4326
+#' )
+#' pol2.geom <- sf::st_sfc(
+#'   sf::st_polygon(list(rbind(c(0,0), c(2,0), c(2,2), c(0,2), c(0,0)))),
+#'   crs = 4326
+#' )
+#' pol2.sf <- sf::st_sf(data.frame(Dens = 0.5), geometry = pol2.geom, crs = 4326)
+#'
+#' overlay_sdm(pol1.geom, pol2.sf, 1, 25)
+#'
+#' # Output 'Dens' value is NA because of higher overlap.perc value
+#' overlay_sdm(pol1.geom, pol2.sf, 1, 50)
+#'
+#' # These examples take longer to run
 #' overlay_sdm(sf::st_geometry(preds.1), preds.2, 1, 50)
 #' overlay_sdm(sf::st_geometry(preds.2), preds.1, "Density", 50)
 #'
@@ -64,6 +80,12 @@ overlay_sdm <- function(base.geom, sdm, sdm.idx, overlap.perc) {
   if (!all(units(sdm.area.m2)$numerator == c("m", "m"))) {
     stop("Units of st_area(sdm.area.m2) must be m^2")
   }
+
+  # sdm.orig <- sdm
+  # base.geom.orig <- base.geom
+  # all(st_is_valid(sdm))
+  # all(st_is_valid(base.geom))
+  # browser()
 
   #--------------------------------------------------------
   ### Other input checks and some processing
@@ -119,11 +141,13 @@ overlay_sdm <- function(base.geom, sdm, sdm.idx, overlap.perc) {
   )
 
   sdm <- sdm %>%
-    select(sdm.idx) %>%
+    select(all_of(sdm.idx)) %>%
     filter(!is.na(!!sym(sdm.idx[1]))) %>%
     st_set_agr("constant")
-  sdm <- suppressMessages(st_crop(sdm, st_bbox(base.geom))) %>%
-    st_set_agr("constant")
+
+  # sdm <- suppressMessages(st_crop(sdm, st_bbox(base.geom))) %>%
+  #   st_set_agr("constant") %>%
+  #   st_make_valid()
   # ^ separate so that suppressMessages() can be used
   # ^^ Will throw a waring if st_agr(sdm) != "constant" for all provided data
 
@@ -135,6 +159,13 @@ overlay_sdm <- function(base.geom, sdm, sdm.idx, overlap.perc) {
     stop("Unable to successfully run 'st_intersection(sdm, base.geom)'; ",
          "make sure that base.geom and sdm are valid objects of ",
          "class sfc and sf, respectively")
+  }
+
+  if (!all(st_is_valid(int))) {
+    warning("The output of st_intersection(sdm, base.geom) was invalid - ",
+            "this was corrected via ",
+            "sf::st_make_valid(st_intersection(sdm, base.geom))")
+    int <- st_make_valid(int)
   }
 
   int <- int %>%

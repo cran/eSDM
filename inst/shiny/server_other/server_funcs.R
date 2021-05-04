@@ -60,9 +60,10 @@ pts2poly_vertices_shiny <- function(x, crs.prov, progress.detail) {
 check_gis_crs <- function(x) {
   validate(
     need(inherits(x, "sf"),
-         "Error: GIS object was not read in properly") %then%
-      need(st_crs(x)$proj4string,
-           "Error: GIS object does not have defined projection")
+         "Error: GIS object was not read in properly"))
+  validate(
+    need(st_crs(x)$proj4string,
+         "Error: GIS object does not have defined projection")
   )
 
   list(st_transform(x, crs.ll), x)
@@ -139,17 +140,23 @@ check_valid <- function(x, progress.detail = FALSE) {
     incProgress(0, detail = "Checking if the object's geometry is valid")
   }
 
-  x.valid <- st_is_valid(x, reason = TRUE)
+  # update b/c 'reason only works for projected coordinates'
+  x.valid <- st_is_valid(x)
 
-  if (!isTruthy(all(x.valid == "Valid Geometry"))) { #isTruthy() is for NA cases
+  if (all(isTruthy(all(x.valid)))) {
+    x
+
+  } else {
     if (progress.detail) {
       incProgress(0, detail = "Making the object's geometry valid")
     }
-    x.message <- x.valid[x.valid != "Valid Geometry"]
-
+    if (!st_is_longlat(x)) {
+      x.valid <- st_is_valid(x, reason = TRUE)
+      x.message <- x.valid[x.valid != "Valid Geometry"]
+    } else {
+      x.message <- "Invalid geometry"
+    }
     make_geom_valid(x, message.invalid = x.message)
-  } else {
-    x
   }
 }
 

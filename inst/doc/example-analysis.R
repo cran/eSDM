@@ -82,11 +82,17 @@ poly.erase <- eSDM::gshhg.l.L16 %>%
   st_crop(st_buffer(poly.study, 100000))
 
 # Create the base geometry; st_erase() function defined in eSDM_vignette_helper.R
-base.geom <- model.r.sf %>%
-  st_geometry() %>%
+#   Keep base.geom.sf so we don't have to run overlay function on model.r.sf
+base.geom.sf <- model.r.sf %>%
+  mutate(idx = 1:nrow(model.r.sf)) %>% 
+  select(idx) %>% 
+  st_set_agr("constant") %>% 
+  # st_geometry() %>%
   st_erase(poly.erase) %>% 
   st_intersection(poly.study) %>%
   st_cast("MULTIPOLYGON")
+
+base.geom <- st_geometry(base.geom.sf)
 
 ## ---- fig.width=5, fig.height=7-----------------------------------------------
 # Visualize the base geometry
@@ -106,23 +112,31 @@ model.r.sf <- model.r.sf %>%
   mutate(variance = se^2) %>% 
   dplyr::select(pred_bm, se, variance)
 
+## ---- eval=FALSE--------------------------------------------------------------
+#  ### CODE BLOCK NOT RUN
+#  # Perform overlay, and convert overlaid uncertainty values to SEs
+#  over1.sf <- eSDM::overlay_sdm(base.geom, st_transform(model.b.sf, st_crs(base.geom)), c("pred_bm", "variance"), 50) %>%
+#    mutate(se = sqrt(variance))
+#  over2.sf <- eSDM::overlay_sdm(base.geom, st_transform(model.h.sf, st_crs(base.geom)), c("pred_bm", "variance"), 50) %>%
+#    mutate(se = sqrt(variance))
+#  # over3.sf <- eSDM::overlay_sdm(base.geom, model.r.sf, c("pred_bm", "variance"), 50) %>%
+#  #   mutate(se = sqrt(variance))
+#  
+#  # ## Save these results for CRAN
+#  # saveRDS(over1.sf, file = "../inst/extdata/Predictions_Beckeretal2016_overlaid.rds")
+#  # saveRDS(over2.sf, file = "../inst/extdata/Predictions_Hazenetal2017_overlaid.rds")
+
 ## -----------------------------------------------------------------------------
-# Perform overlay, and convert overlaid uncertainty values to SEs
-over1.sf <- eSDM::overlay_sdm(base.geom, st_transform(model.b.sf, st_crs(base.geom)), c("pred_bm", "variance"), 50) %>% 
-  mutate(se = sqrt(variance))
-over2.sf <- eSDM::overlay_sdm(base.geom, st_transform(model.h.sf, st_crs(base.geom)), c("pred_bm", "variance"), 50) %>% 
-  mutate(se = sqrt(variance))
-over3.sf <- eSDM::overlay_sdm(base.geom, model.r.sf, c("pred_bm", "variance"), 50) %>% 
-  mutate(se = sqrt(variance))
+over1.sf <- readRDS(system.file("extdata/Predictions_Beckeretal2016_overlaid.rds", package = "eSDM")) %>% 
+  st_set_crs(st_crs(base.geom))
+over2.sf <- readRDS(system.file("extdata/Predictions_Hazenetal2017_overlaid.rds", package = "eSDM")) %>% 
+  st_set_crs(st_crs(base.geom))
 
-over3.sfb <- model.r.sf %>% 
-  st_set_geometry(NULL) %>% 
-  dplyr::select(pred_bm, variance) %>% 
-  st_sf(geometry = base.geom, agr = "constant") %>% 
-  dplyr::mutate(se = sqrt(variance))
-all.equal(over3.sf, over3.sfb)
-rm(over3.sfb)
-
+over3.sf <- st_drop_geometry(model.r.sf) %>% 
+  mutate(idx = 1:nrow(model.r.sf)) %>% 
+  left_join(base.geom.sf, by = "idx") %>% 
+  select(-idx) %>% 
+  st_as_sf()
 
 ## ---- fig.width=7, fig.height=3, eval=FALSE-----------------------------------
 #  # Plot overlaid predictions; code not run
