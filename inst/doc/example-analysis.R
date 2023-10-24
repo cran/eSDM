@@ -1,4 +1,4 @@
-## ---- include = FALSE---------------------------------------------------------
+## ----include = FALSE----------------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -27,7 +27,7 @@ map.world <- eSDM::gshhg.l.L16
 # Other option for making base map
 # map.world <- st_geometry(st_as_sf(maps::map('world', plot = FALSE, fill = TRUE)))
 
-## ---- fig.width=7, fig.height=3-----------------------------------------------
+## ----fig.width=7, fig.height=3------------------------------------------------
 plot_sf_3panel(
   model.b.sf, "pred_bm", main.txt = "Model_B - ", map.base = map.world, 
   x.axis.at = c(-130, -125, -120)
@@ -42,7 +42,7 @@ model.h.sf <- readRDS(system.file("extdata/Predictions_Hazenetal2017.rds", packa
 
 model.h.sf
 
-## ---- fig.width=7, fig.height=3-----------------------------------------------
+## ----fig.width=7, fig.height=3------------------------------------------------
 plot_sf_3panel(
   model.h.sf, "pred_bm", main.txt = "Model_H - ", map.base = map.world, 
   x.axis.at = c(-135, -130, -125, -120)
@@ -57,13 +57,13 @@ model.r.sf <- readRDS(system.file("extdata/Predictions_Redfernetal2017.rds", pac
 
 model.r.sf
 
-## ---- fig.width=7, fig.height=3-----------------------------------------------
+## ----fig.width=7, fig.height=3------------------------------------------------
 plot_sf_3panel(
   model.r.sf, "pred_bm", main.txt = "Model_R - ", map.base = map.world, 
   x.axis.at = c(-130, -125, -120)
 )
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  # Example code for converting raster to sf object; code not run
 #  logo <- raster::raster(system.file("external/rlogo.grd", package="raster"))
 #  logo.sf <- as(logo, "SpatialPolygonsDataFrame") %>%
@@ -94,7 +94,7 @@ base.geom.sf <- model.r.sf %>%
 
 base.geom <- st_geometry(base.geom.sf)
 
-## ---- fig.width=5, fig.height=7-----------------------------------------------
+## ----fig.width=5, fig.height=7------------------------------------------------
 # Visualize the base geometry
 plot(st_transform(base.geom, 4326), col = NA, border = "black", axes = TRUE)
 plot(map.world, add = TRUE, col = "tan", border = NA)
@@ -112,7 +112,7 @@ model.r.sf <- model.r.sf %>%
   mutate(variance = se^2) %>% 
   dplyr::select(pred_bm, se, variance)
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  ### CODE BLOCK NOT RUN
 #  # Perform overlay, and convert overlaid uncertainty values to SEs
 #  over1.sf <- eSDM::overlay_sdm(base.geom, st_transform(model.b.sf, st_crs(base.geom)), c("pred_bm", "variance"), 50) %>%
@@ -138,7 +138,7 @@ over3.sf <- st_drop_geometry(model.r.sf) %>%
   select(-idx) %>% 
   st_as_sf()
 
-## ---- fig.width=7, fig.height=3, eval=FALSE-----------------------------------
+## ----fig.width=7, fig.height=3, eval=FALSE------------------------------------
 #  # Plot overlaid predictions; code not run
 #  plot_sf_3panel(over1.sf, "pred_bm", main.txt = "Overlaid Model_B - ", map.base = map.world)
 #  plot_sf_3panel(over2.sf, "pred_bm", main.txt = "Overlaid Model_H - ", map.base = map.world)
@@ -165,7 +165,7 @@ valid.data %>%
             abs = sum(pres_abs == 0)) %>% 
   knitr::kable(caption = "Validation data summary")
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  # Calculate evaluation metrics with different validation data sets; code not run
 #  names.1 <- c(
 #    "Model_B_orig", "Model_H_orig", "Model_R_orig",
@@ -296,7 +296,7 @@ ens.sf.wvar <- eSDM::ensemble_create(
   dplyr::select(Pred_ens, SE) %>% 
   st_set_agr("constant")
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  # Create an ensemble and calculate within-model uncertainty; code not run
 #  ens.sf.unw.wmv <- eSDM::ensemble_create(
 #    over.sf.rescaled, c("pred_bm1", "pred_bm2", "pred_bm3"),  w = e.weights.unw,
@@ -305,7 +305,7 @@ ens.sf.wvar <- eSDM::ensemble_create(
 #    mutate(SE = sqrt(Var_ens)) %>%
 #    dplyr::select(Pred_ens , SE)
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  # Calculate evaluation metrics for ensembles; code not run
 #  names.2 <- c(
 #    "Ensemble – unweighted", "Ensemble – AUC-based weights",
@@ -345,14 +345,14 @@ read.csv(system.file("extdata/Table3.csv", package = "eSDM")) %>%
                 `AUC-HR` = AUC.HR, `TSS-HR` = TSS.HR) %>% 
   knitr::kable(caption = "Evaluation metrics", digits = 3, align = "lcccccc")
 
-## ---- fig.width=7, fig.height=3-----------------------------------------------
+## ----fig.width=7, fig.height=3------------------------------------------------
 # Simple code to visualize ensemble created with weights based on TSS values
 plot_sf_3panel(
   rename(ens.sf.wtss, se = SE), "Pred_ens", main.txt = "Ensemble-TSS - ", 
   map.base = map.world, x.axis.at = c(-130, -125, -120)
 )
 
-## ---- fig.width=7, fig.height=4, eval=FALSE-----------------------------------
+## ----fig.width=7, fig.height=4, eval=FALSE------------------------------------
 #  ### Figure 4; code not run
 #  library(tmap)
 #  
@@ -399,7 +399,7 @@ plot_sf_3panel(
 #    list(tmap.obj1, tmap.obj2, tmap.obj3), ncol = 3, asp = NULL, outer.margins = 0.05
 #  )
 
-## ---- fig.height=9, fig.width=5.7, eval=FALSE---------------------------------
+## ----fig.height=9, fig.width=5.7, eval=FALSE----------------------------------
 #  ### Figure 5; code not run
 #  
 #  # Values passed to tmap_sdm - size of text labels and legend width
