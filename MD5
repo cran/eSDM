@@ -1,9 +1,9 @@
-025aa9cbc64319c788ecc36b6580b5b2 *DESCRIPTION
+559a61ee2f1e7c596ea9407f29f71dba *DESCRIPTION
 4f875b319cd42937c7ea8428fa397f36 *NAMESPACE
-227cfbd9e6ef7945942e4efa4419939e *NEWS.md
+1bc96e3aba4c3d9586ce32e57818d685 *NEWS.md
 a1952857678efb9dbe12544b37242064 *R/data.R
 bf0d87ca69d5fb0e5a604272f4204b76 *R/eSDM-internal.R
-946acfd074256c30a5a72e9d141903a9 *R/eSDM-package.R
+bcc4564b5bb27b90bdc454100fa10d5d *R/eSDM-package.R
 64cd6291d94278c9939a044cb27166b1 *R/eSDM_GUI.R
 e462dc4f92d4bb7505c5b0d2564b224a *R/ensemble_create.R
 c239b021472b625d314924b209b01e45 *R/ensemble_rescale.R
@@ -12,7 +12,7 @@ ef116840149e92bc5d90105cc63c4b21 *R/model_abundance.R
 e6a12458c19a3d251c7e9885f573e133 *R/overlay_sdm.R
 42205bba69a8a55ce0c1ade59ce9f436 *R/pts2poly_centroids.R
 bb9835139b9e1e565e64021d558246f1 *R/pts2poly_vertices.R
-079808e93dc5bc94784626565ed63dac *build/vignette.rds
+8579f49acbc784efaf4ca52b64729503 *build/vignette.rds
 92bc4d30abc5f0b7833de684b3e32be1 *data/gshhg.l.L16.rda
 64c46e8f1274501b27f757ffc463b8ec *data/preds.1.rda
 2212ffd2d875e7a5887d34381708dd0b *data/preds.2.rda
@@ -21,7 +21,7 @@ c650677a2bc39614cb5518b6dc4177c3 *data/preds.3.rda
 cf0a907654972129521c0cffbc7a20d7 *inst/CITATION
 7a54987a169d219fd811e65d792669d4 *inst/doc/example-analysis.R
 e5a4eee9131daf215074cb76f12d1013 *inst/doc/example-analysis.Rmd
-0ce2c6575ab0583121467a003212b75d *inst/doc/example-analysis.html
+048cd1c24d803e1abcbc629fe9ac6daf *inst/doc/example-analysis.html
 724d4690f8df7496a7b0b493b1e2013c *inst/eSDM_vignette_helper.R
 2638be848221d454b4937d0f8f6ffa08 *inst/extdata/Predictions_Beckeretal2016.rds
 53f99e839496f656d0873ed349329433 *inst/extdata/Predictions_Beckeretal2016_overlaid.rds
@@ -38,7 +38,7 @@ e7386c50d58beea8a27cfc507e0cfbc1 *inst/extdata/Shapefiles/Study_Area_CCE.shp.xml
 9f3342d2e125207eef4f87cc97cb527e *inst/extdata/Shapefiles/Study_Area_CCE.shx
 bbeb3f69013598b67762564e41731800 *inst/extdata/Table3.csv
 4b2fcfa396dda0737352f7b5255b1a05 *inst/extdata/eSDM_Validation_data_all.rds
-793ac4178029b33aff7733043a9af26f *inst/shiny/app.R
+9aa0b117cebf95fff66331b036cb0f89 *inst/shiny/app.R
 f70a26dfbf9cc768253b22e14a39c03c *inst/shiny/server_1_loadModels/server_1_loadModels.R
 bc9583c77678e5a3af113b8077773ebe *inst/shiny/server_1_loadModels/server_1_loadModels_create_local.R
 81746bcad95c64d3b99ab5258460abab *inst/shiny/server_1_loadModels/server_1_loadModels_csv.R
@@ -101,7 +101,7 @@ f07d62217b38248f4eabaf088ca227d4 *inst/shiny/ui_files/ui_7_manual.R
 665cbd3141d3ad033f4d8ba7fc736b52 *inst/shiny/ui_files/ui_funcs.R
 494f91f82c2e70eaac0f4863e40d145a *inst/shiny/www/eSDM_manual.pdf
 f461c2f37b83b4cc9ee4386f4b4906a8 *inst/shiny/www/noaa_logo.png
-f583c1839c082365b8cb1815aa3187d9 *man/eSDM-package.Rd
+6af5e1e2f68f064488ba0fe6f6cf4ffd *man/eSDM-package.Rd
 3303c3ce1a5733dad36bc9e50c01e318 *man/eSDM_GUI.Rd
 f043a87dfd164b03d5913b690b2410e2 *man/ensemble_create.Rd
 4a68532342de4097490c51c375a974da *man/ensemble_rescale.Rd
