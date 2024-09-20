@@ -24,7 +24,13 @@ Object of class \code{sf} with the geometry of \code{base.geom} and
   geometry. Note that this means all columns of \code{sdm} not in
   \code{sdm.idx} will not be in the returned object.
   Because the data are considered spatially intensive, the \code{agr}
-  attribute will be set as 'constant' for all columns in the returned object
+  attribute will be set as 'constant' for all columns in the returned object.
+
+  Additionally, the output will match the class of \code{sdm}, with regards
+  to the classes tbl_df, tbl, and data.frame. This means that, in addition to
+  being an \code{sf} object, if \code{sdm} is a tibble then the output will
+  also be a tibble, while if \code{sdm} is just a data frame then the output
+  will not be a tibble.
 }
 \description{
 Overlay specified SDM predictions that meet the percent overlap threshold requirement onto base geometry
@@ -45,13 +51,14 @@ See the eSDM GUI manual for specifics about the overlay process.
 \examples{
 pol1.geom <- sf::st_sfc(
   sf::st_polygon(list(rbind(c(1,1), c(3,1), c(3,3), c(1,3), c(1,1)))),
-  crs = 4326
+  crs = sf::st_crs(4326)
 )
 pol2.geom <- sf::st_sfc(
   sf::st_polygon(list(rbind(c(0,0), c(2,0), c(2,2), c(0,2), c(0,0)))),
-  crs = 4326
+  crs = sf::st_crs(4326)
 )
-pol2.sf <- sf::st_sf(data.frame(Dens = 0.5), geometry = pol2.geom, crs = 4326)
+pol2.sf <- sf::st_sf(data.frame(Dens = 0.5), geometry = pol2.geom,
+                     crs = sf::st_crs(4326))
 
 overlay_sdm(pol1.geom, pol2.sf, 1, 25)
 
