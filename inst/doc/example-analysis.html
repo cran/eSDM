@@ -12,7 +12,7 @@
 
 <meta name="author" content="Samuel Woodman" />
 
-<meta name="date" content="2024-09-20" />
+<meta name="date" content="2024-10-07" />
 
 <title>Example analysis - Woodman et al 2019</title>
 
@@ -340,7 +340,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">Example analysis - Woodman et al 2019</h1>
 <h4 class="author">Samuel Woodman</h4>
-<h4 class="date">2024-09-20</h4>
+<h4 class="date">2024-10-07</h4>
 
 
 
@@ -369,7 +369,7 @@ data are read from .rds files because the original files were too large
 to be included in the package. The sections where these data are
 imported includes the code for reading the data from their original
 files, although this code has been commented out. The original files can
-be downloaded through the GUI or at <a href="https://github.com/smwoodman/eSDM-data" class="uri">https://github.com/smwoodman/eSDM-data</a>.</p>
+be downloaded through the GUI or at <a href="https://github.com/SWFSC/eSDM-data" class="uri">https://github.com/SWFSC/eSDM-data</a>.</p>
 <p>This document contains code for plotting predictions. However, by
 default some of the plotting code is not run because it can take several
 minutes (these code chunks contain the comment “code not run”). If
@@ -541,7 +541,7 @@ base geometry.</p>
 <span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>  <span class="fu">st_geometry</span>() <span class="sc">%&gt;%</span> </span>
 <span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a>  <span class="fu">st_transform</span>(<span class="fu">st_crs</span>(model.r.sf))</span>
 <span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a><span class="co">#&gt; Reading layer `Study_Area_CCE&#39; from data source </span></span>
-<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a><span class="co">#&gt;   `C:\Users\sam.woodman\AppData\Local\Temp\Rtmpwh3ktQ\Rinst34041d5f3200\eSDM\extdata\Shapefiles\Study_Area_CCE.shp&#39; </span></span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a><span class="co">#&gt;   `C:\Users\sam.woodman\AppData\Local\Temp\RtmpM9jNNC\Rinst4f0853fd9e\eSDM\extdata\Shapefiles\Study_Area_CCE.shp&#39; </span></span>
 <span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a><span class="co">#&gt;   using driver `ESRI Shapefile&#39;</span></span>
 <span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a><span class="co">#&gt; Simple feature collection with 1 feature and 6 fields</span></span>
 <span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a><span class="co">#&gt; Geometry type: POLYGON</span></span>
@@ -644,7 +644,7 @@ value is a presence point (1) or absence point (0).</p>
 <p>Note that in this vignette, the validation data are read from .rds
 files because the original file was too big to be included in the
 package. However, the original file can be downloaded through the GUI or
-at <a href="https://github.com/smwoodman/eSDM-data" class="uri">https://github.com/smwoodman/eSDM-data</a></p>
+at <a href="https://github.com/SWFSC/eSDM-data" class="uri">https://github.com/SWFSC/eSDM-data</a></p>
 <p>Use the function <code>sf::st_as_sf</code> to convert a data frame
 with lon/lat coordinates to an <code>sf</code> object.</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="co"># Import and process validation data</span></span>

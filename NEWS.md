@@ -1,3 +1,10 @@
+# eSDM 0.4.4
+
+* Updated all [eSDM-data](https://github.com/SWFSC/eSDM-data) links after transferring to the [SWFSC](https://github.com/SWFSC) organization. 
+
+* Corred several remaining smwoodman/eSDM, particularly in the Shiny app
+
+
 # eSDM 0.4.3
 
 * `overlay_sdm` maintains data.frame/tbl/tbl_df class consistency [#17]
@@ -7,7 +14,7 @@
 
 # eSDM 0.4.2
 
-* Moved repo to https://github.com/swfsc, and updated all associated documentation
+* Moved repo to https://github.com/SWFSC, and updated all associated documentation
 
 * Changed license to Apache License (== 2), based on NMFS guidance at https://nmfs-opensci.github.io/GitHub-Guide
 

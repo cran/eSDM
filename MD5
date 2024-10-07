@@ -1,9 +1,9 @@
-b7ee5f4923cee42d93e0d29149a05509 *DESCRIPTION
+e35d939ce8c9f28dfefd189f4b8324cf *DESCRIPTION
 4f875b319cd42937c7ea8428fa397f36 *NAMESPACE
-ef03c2cb0133d2a1245bef765cf428c9 *NEWS.md
+273478e4b530c261960b265ee3e268d9 *NEWS.md
 a1952857678efb9dbe12544b37242064 *R/data.R
 bf0d87ca69d5fb0e5a604272f4204b76 *R/eSDM-internal.R
-88d210a639764235304134313d98e98f *R/eSDM-package.R
+2585e0923875f294d08adfd70541ae38 *R/eSDM-package.R
 f8104e1c21e1c35353d0c5370b467738 *R/eSDM_GUI.R
 e462dc4f92d4bb7505c5b0d2564b224a *R/ensemble_create.R
 c239b021472b625d314924b209b01e45 *R/ensemble_rescale.R
@@ -20,8 +20,8 @@ bb9835139b9e1e565e64021d558246f1 *R/pts2poly_vertices.R
 0f73f18b16b4f0f74d34e35cb19940a4 *data/validation.data.rda
 cf0a907654972129521c0cffbc7a20d7 *inst/CITATION
 7a54987a169d219fd811e65d792669d4 *inst/doc/example-analysis.R
-e5a4eee9131daf215074cb76f12d1013 *inst/doc/example-analysis.Rmd
-ea213ef14293ff86985f06caa753bf66 *inst/doc/example-analysis.html
+ecb2750be0b575070d18fc87718eafa4 *inst/doc/example-analysis.Rmd
+61d3247b975cb53ef87beb43dbc86bc9 *inst/doc/example-analysis.html
 724d4690f8df7496a7b0b493b1e2013c *inst/eSDM_vignette_helper.R
 2638be848221d454b4937d0f8f6ffa08 *inst/extdata/Predictions_Beckeretal2016.rds
 53f99e839496f656d0873ed349329433 *inst/extdata/Predictions_Beckeretal2016_overlaid.rds
@@ -86,10 +86,10 @@ b33dbe66c3dc2e47c8e0d4449170721c *inst/shiny/server_other/server_plots_download.
 12dd17821210cb9fc0a8c0be8a035fda *inst/shiny/server_other/server_plots_funcs.R
 06ddcfbc387b49b77199cc97bfb09b71 *inst/shiny/server_other/server_reactiveValues.R
 77bfc566f3aed9f411b3e8961520de00 *inst/shiny/server_other/server_render.R
-b60aab84d0f73b79122f558b126dca7c *inst/shiny/server_other/server_roadmap_download.R
+7233cb9a16e32a525864c9fda6ca0cac *inst/shiny/server_other/server_roadmap_download.R
 94040f8624e7a5e4f92f6174cb2e6d18 *inst/shiny/server_other/server_tables.R
 b9910491cb8a70c1ade6308447cf5d23 *inst/shiny/server_other/server_workspace.R
-4a631a1476739bc85cc2210e78e7ba27 *inst/shiny/ui_files/ui_0_roadmap.R
+b71d7f7e691aa2fe5381d3b7a620e40d *inst/shiny/ui_files/ui_0_roadmap.R
 884fb0655c55a0ba379a6ce94ddd54bd *inst/shiny/ui_files/ui_1_loadModels.R
 7fb2a5c8d285928c462e7134934badd6 *inst/shiny/ui_files/ui_2_overlay.R
 bf1e9ebbbf8e5e381335ff0ee7c9155e *inst/shiny/ui_files/ui_3_createEns.R
@@ -101,7 +101,7 @@ f07d62217b38248f4eabaf088ca227d4 *inst/shiny/ui_files/ui_7_manual.R
 665cbd3141d3ad033f4d8ba7fc736b52 *inst/shiny/ui_files/ui_funcs.R
 494f91f82c2e70eaac0f4863e40d145a *inst/shiny/www/eSDM_manual.pdf
 f461c2f37b83b4cc9ee4386f4b4906a8 *inst/shiny/www/noaa_logo.png
-436c86d97b295e4c8572393f1d8ec618 *man/eSDM-package.Rd
+f7c688f2e0e62d51795c9e7e55b7f0da *man/eSDM-package.Rd
 c661f02194d834c178659d05d19e7001 *man/eSDM_GUI.Rd
 f043a87dfd164b03d5913b690b2410e2 *man/ensemble_create.Rd
 4a68532342de4097490c51c375a974da *man/ensemble_rescale.Rd
@@ -119,4 +119,4 @@ e1588d1fd942658bc36d30c8020e7f50 *tests/testthat.R
 4981c6bb17df9e30777a6091dff1beb4 *tests/testthat/test-model_abundance.R
 85b00d1fd405d2fac8707e33a22e7daa *tests/testthat/test-overlay_sdm.R
 95c8ee3de965eea67390a242d4ec3c94 *tests/testthat/test-pts2poly.R
-e5a4eee9131daf215074cb76f12d1013 *vignettes/example-analysis.Rmd
+ecb2750be0b575070d18fc87718eafa4 *vignettes/example-analysis.Rmd
